@@ -1,24 +1,19 @@
-
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-
-  return (
-    <footer className="bg-gray-900 text-white py-16">
+  return <footer className="bg-gray-900 text-white py-16">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
-              <img 
-                src="/lovable-uploads/0b51edb6-cae2-4235-8932-10fca4da5ccd.png" 
-                alt="MY Balloons MY Prop's Logo" 
-                className="h-16 w-auto"
-              />
+              <img src="/lovable-uploads/0b51edb6-cae2-4235-8932-10fca4da5ccd.png" alt="MY Balloons MY Prop's Logo" className="h-16 w-auto object-scale-down" />
             </div>
             
             <p className="text-gray-400 mb-6 leading-relaxed">
@@ -47,42 +42,27 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <button 
-                  onClick={() => scrollToSection('home')}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-white transition-colors duration-200">
                   Home
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('about')}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <button onClick={() => scrollToSection('about')} className="text-gray-400 hover:text-white transition-colors duration-200">
                   About Us
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('services')}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <button onClick={() => scrollToSection('services')} className="text-gray-400 hover:text-white transition-colors duration-200">
                   Event Services
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('props')}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <button onClick={() => scrollToSection('props')} className="text-gray-400 hover:text-white transition-colors duration-200">
                   Shop Props
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('contact')}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
+                <button onClick={() => scrollToSection('contact')} className="text-gray-400 hover:text-white transition-colors duration-200">
                   Contact Us
                 </button>
               </li>
@@ -137,8 +117,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
