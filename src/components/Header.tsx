@@ -31,14 +31,12 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-festive rounded-full flex items-center justify-center animate-bounce-gentle">
-              <span className="text-white font-bold text-xl">🎈</span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">MY Balloons</h1>
-              <p className="text-sm text-gray-600">MY Prop's</p>
-            </div>
+          <div className="flex items-center">
+            <img 
+              src="/lovable-uploads/0b51edb6-cae2-4235-8932-10fca4da5ccd.png" 
+              alt="MY Balloons MY Prop's Logo" 
+              className="h-12 w-auto"
+            />
           </div>
 
           {/* Navigation */}
