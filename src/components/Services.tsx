@@ -5,43 +5,29 @@ const Services = () => {
   const services = [
     {
       icon: '🎂',
-      title: 'Birthday Parties',
-      description: 'Complete birthday party planning with themed decorations, balloon arrangements, and entertainment setup.',
+      title: 'Birthday Party Planning',
+      description: 'Fun themes, balloons, cakes, and games — planned with love! Complete birthday party management with memorable experiences.',
       color: 'from-red-50 to-pink-50',
       buttonColor: 'bg-brand-red hover:bg-red-600'
     },
     {
       icon: '💍',
-      title: 'Wedding Events',
-      description: 'Elegant wedding decorations, floral arrangements, and complete venue transformation for your special day.',
+      title: 'Wedding & Engagement Events',
+      description: 'Elegant decor, stage setup, lights & more for your big day. Complete wedding planning with fairy-tale touches.',
       color: 'from-blue-50 to-indigo-50',
       buttonColor: 'bg-brand-blue hover:bg-blue-600'
     },
     {
-      icon: '🏢',
+      icon: '🎉',
       title: 'Corporate Events',
-      description: 'Professional corporate event management with sophisticated decorations and brand-aligned themes.',
+      description: 'Professional event setups for launches, parties, and conferences. Sophisticated planning for business celebrations.',
       color: 'from-yellow-50 to-orange-50',
       buttonColor: 'bg-brand-yellow hover:bg-yellow-600'
     },
     {
-      icon: '🎭',
-      title: 'Theme Parties',
-      description: 'Custom themed decorations for any occasion - from superhero parties to elegant galas.',
-      color: 'from-purple-50 to-pink-50',
-      buttonColor: 'bg-purple-500 hover:bg-purple-600'
-    },
-    {
-      icon: '🎓',
-      title: 'Graduation Celebrations',
-      description: 'Celebrate academic achievements with custom decorations and memorable photo setups.',
-      color: 'from-green-50 to-emerald-50',
-      buttonColor: 'bg-green-500 hover:bg-green-600'
-    },
-    {
-      icon: '🍼',
-      title: 'Baby Showers',
-      description: 'Adorable baby shower decorations with soft themes and beautiful balloon arrangements.',
+      icon: '🧸',
+      title: 'Baby Showers & Gender Reveals',
+      description: 'Cute and creative themes to welcome the little one. Adorable decorations for precious moments.',
       color: 'from-pink-50 to-rose-50',
       buttonColor: 'bg-pink-500 hover:bg-pink-600'
     }
@@ -59,18 +45,20 @@ const Services = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Our</span> <span className="text-gray-800">Services</span>
+            <span className="text-gradient">✨ What We</span> <span className="text-gray-800">Offer</span>
           </h2>
           
           <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
           
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            From intimate gatherings to grand celebrations, we provide comprehensive event management 
-            and decoration services tailored to your vision.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+            Each service comes with <strong>customizable packages</strong> and end-to-end management.
+          </p>
+          <p className="text-lg text-gray-600">
+            We bring creativity, color, and class to every occasion.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
           {services.map((service, index) => (
             <div 
               key={index}
@@ -98,17 +86,17 @@ const Services = () => {
           ))}
         </div>
 
-        <div className="text-center mt-16">
+        <div className="text-center">
           <div className="bg-white p-8 rounded-2xl shadow-lg inline-block">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Custom Events</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Book Your Event Now</h3>
             <p className="text-gray-600 mb-6 max-w-md">
-              Don't see your event type? We specialize in custom celebrations for any occasion!
+              Ready to make your celebration unforgettable? Let's discuss your event requirements and create something magical together!
             </p>
             <Button 
               onClick={scrollToContact}
               className="bg-gradient-festive text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
             >
-              Discuss Your Event
+              📋 Get Started Now
             </Button>
           </div>
         </div>

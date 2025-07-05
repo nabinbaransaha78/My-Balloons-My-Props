@@ -16,6 +16,7 @@ const ContactForm = () => {
     email: '',
     eventType: '',
     eventDate: '',
+    location: '',
     message: ''
   });
 
@@ -51,6 +52,7 @@ const ContactForm = () => {
       email: '',
       eventType: '',
       eventDate: '',
+      location: '',
       message: ''
     });
   };
@@ -60,7 +62,7 @@ const ContactForm = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Get In</span> <span className="text-gray-800">Touch</span>
+            <span className="text-gradient">📋 Let's Talk About</span> <span className="text-gray-800">Your Celebration</span>
           </h2>
           
           <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
@@ -87,7 +89,7 @@ const ContactForm = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800">Phone</h3>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-gray-600">+91-9035106677</p>
                   </div>
                 </div>
 
@@ -97,17 +99,20 @@ const ContactForm = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800">Email</h3>
-                    <p className="text-gray-600">hello@myballoonsbyprops.com</p>
+                    <p className="text-gray-600">info@myballons.in</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-2xl">📍</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800">Location</h3>
-                    <p className="text-gray-600">Serving All Major Cities</p>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal, 
+                      Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
+                    </p>
                   </div>
                 </div>
 
@@ -143,20 +148,20 @@ const ContactForm = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="mt-1"
+                  />
+                </div>
 
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
                     <Input
@@ -169,36 +174,34 @@ const ContactForm = () => {
                       className="mt-1"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <Label htmlFor="email">Email Address *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                  />
+                  <div>
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="mt-1"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="eventType">Event Type *</Label>
+                    <Label htmlFor="eventType">Type of Event *</Label>
                     <Select onValueChange={handleSelectChange}>
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Select event type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="birthday">Birthday Party</SelectItem>
+                        <SelectItem value="birthday">Birthday</SelectItem>
                         <SelectItem value="wedding">Wedding</SelectItem>
-                        <SelectItem value="corporate">Corporate Event</SelectItem>
+                        <SelectItem value="corporate">Corporate</SelectItem>
                         <SelectItem value="baby-shower">Baby Shower</SelectItem>
-                        <SelectItem value="graduation">Graduation</SelectItem>
-                        <SelectItem value="anniversary">Anniversary</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="others">Others</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -217,7 +220,21 @@ const ContactForm = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Tell us about your event</Label>
+                  <Label htmlFor="location">City/Location *</Label>
+                  <Input
+                    id="location"
+                    name="location"
+                    type="text"
+                    required
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    placeholder="Enter your city or event location"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="message">Your Message</Label>
                   <Textarea
                     id="message"
                     name="message"
@@ -233,7 +250,7 @@ const ContactForm = () => {
                   type="submit"
                   className="w-full bg-gradient-festive text-white font-semibold py-4 rounded-full text-lg transition-all duration-300 hover:scale-105 shadow-lg"
                 >
-                  🎉 Send My Event Request
+                  🎉 Submit Inquiry
                 </Button>
               </form>
             </CardContent>

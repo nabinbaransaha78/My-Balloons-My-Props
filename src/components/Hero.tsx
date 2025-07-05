@@ -24,14 +24,14 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-          <span className="text-gradient">Celebrate Every</span>
+          <span className="text-gradient">🎉 Celebrate Every</span>
           <br />
           <span className="text-gray-800">Moment with Us!</span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-          From magical birthdays to elegant weddings, we bring your celebrations to life with 
-          premium decorations and unforgettable experiences.
+        <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          From elegant weddings to fun-filled birthdays, and from grand events to the tiniest joyful detail — 
+          we make every celebration unforgettable!
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

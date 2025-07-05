@@ -11,43 +11,43 @@ const PropsStore = () => {
   const products = [
     {
       id: 1,
-      name: 'Balloon Bouquet - Classic',
-      price: 25,
-      image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop',
-      description: 'Beautiful balloon bouquet with 12 colorful balloons'
+      name: 'Happy Birthday Banner',
+      price: 199,
+      image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop',
+      description: 'Colorful happy birthday banner perfect for any birthday celebration'
     },
     {
       id: 2,
-      name: 'Birthday Banner Set',
-      price: 15,
-      image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop',
-      description: 'Complete birthday banner with customizable text'
+      name: 'Red & Gold Helium Balloons Set (10 pcs)',
+      price: 149,
+      image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop',
+      description: 'Premium helium-filled balloons in elegant red and gold colors'
     },
     {
       id: 3,
+      name: 'Bride-to-Be Sash',
+      price: 99,
+      image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop',
+      description: 'Beautiful satin sash for the bride-to-be at bachelorette parties'
+    },
+    {
+      id: 4,
       name: 'Photo Booth Props Kit',
-      price: 35,
+      price: 299,
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop',
       description: '20-piece photo booth props for memorable pictures'
     },
     {
-      id: 4,
-      name: 'Table Centerpiece',
-      price: 40,
-      image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=300&fit=crop',
-      description: 'Elegant table centerpiece with balloons and flowers'
-    },
-    {
       id: 5,
       name: 'Balloon Arch Kit',
-      price: 85,
+      price: 499,
       image: 'https://images.unsplash.com/photo-1583342926306-3b1185e0c4a1?w=400&h=300&fit=crop',
-      description: 'DIY balloon arch kit with 100 balloons and tools'
+      description: 'DIY balloon arch kit with 50 balloons and assembly tools'
     },
     {
       id: 6,
       name: 'Party Streamer Pack',
-      price: 12,
+      price: 79,
       image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=300&fit=crop',
       description: 'Colorful streamers and confetti for decoration'
     }
@@ -68,14 +68,14 @@ const PropsStore = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Props</span> <span className="text-gray-800">Store</span>
+            <span className="text-gradient">🎁 Party Props &</span> <span className="text-gray-800">Decor Essentials</span>
           </h2>
           
           <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
           
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Transform your celebration with our premium party props and decorations. 
-            Quality items delivered to make your event unforgettable.
+            Now shop party supplies and photo props online! From balloons to banners, 
+            we've got everything you need.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ const PropsStore = () => {
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4 bg-brand-red text-white px-3 py-1 rounded-full font-bold">
-                  ${product.price}
+                  ₹{product.price}
                 </div>
               </div>
               

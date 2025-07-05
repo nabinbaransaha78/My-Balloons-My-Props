@@ -24,21 +24,21 @@ const Footer = () => {
             </div>
             
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Creating magical moments and unforgettable celebrations through expert event management 
-              and premium party props. Your celebration is our passion.
+              Your one-stop destination for all things celebration! Creating magical moments and 
+              unforgettable celebrations through expert event management and premium party props.
             </p>
             
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
-                <span className="text-white font-bold">f</span>
+              <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="Facebook">
+                <span className="text-white font-bold text-sm">f</span>
               </a>
-              <a href="#" className="w-10 h-10 bg-brand-yellow rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
+              <a href="#" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="Instagram">
                 <span className="text-white font-bold">📷</span>
               </a>
-              <a href="#" className="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
-                <span className="text-white font-bold">🐦</span>
+              <a href="#" className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="YouTube">
+                <span className="text-white font-bold">📹</span>
               </a>
-              <a href="#" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
+              <a href="https://wa.me/919035106677" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="WhatsApp">
                 <span className="text-white font-bold">💬</span>
               </a>
             </div>
@@ -69,7 +69,7 @@ const Footer = () => {
                   onClick={() => scrollToSection('services')}
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
-                  Services
+                  Event Services
                 </button>
               </li>
               <li>
@@ -77,7 +77,7 @@ const Footer = () => {
                   onClick={() => scrollToSection('props')}
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
-                  Props Shop
+                  Shop Props
                 </button>
               </li>
               <li>
@@ -85,7 +85,7 @@ const Footer = () => {
                   onClick={() => scrollToSection('contact')}
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
-                  Contact
+                  Contact Us
                 </button>
               </li>
             </ul>
@@ -97,19 +97,22 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <span className="text-brand-red">📞</span>
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <span className="text-gray-400">+91-9035106677</span>
               </div>
               <div className="flex items-center space-x-3">
                 <span className="text-brand-yellow">✉️</span>
-                <span className="text-gray-400">hello@myballoonsbyprops.com</span>
+                <span className="text-gray-400">info@myballons.in</span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-start space-x-3">
                 <span className="text-brand-blue">📍</span>
-                <span className="text-gray-400">Serving All Major Cities</span>
+                <span className="text-gray-400 text-sm leading-relaxed">
+                  Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal, 
+                  Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <span className="text-green-400">⏰</span>
-                <span className="text-gray-400">Mon-Sat: 9AM-8PM</span>
+                <span className="text-gray-400">Mon-Sun: 9AM-8PM</span>
               </div>
             </div>
           </div>
@@ -131,7 +134,7 @@ const Footer = () => {
           
           <div className="mt-6 text-center">
             <p className="text-gray-500 text-sm">
-              🎈 Making every celebration special, one balloon at a time! 🎉
+              🎈 Let's make memories that last a lifetime — together! 🎉
             </p>
           </div>
         </div>
