@@ -1,3 +1,4 @@
+
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -7,13 +8,19 @@ const Footer = () => {
       });
     }
   };
-  return <footer className="bg-gray-900 text-white py-16">
+
+  return (
+    <footer className="bg-gray-900 text-white py-16">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
-              <img src="/lovable-uploads/0b51edb6-cae2-4235-8932-10fca4da5ccd.png" alt="MY Balloons MY Prop's Logo" className="h-16 w-auto object-scale-down" />
+              <img 
+                src="/lovable-uploads/0b51edb6-cae2-4235-8932-10fca4da5ccd.png" 
+                alt="MY Balloons MY Prop's Logo" 
+                className="h-16 w-auto object-scale-down" 
+              />
             </div>
             
             <p className="text-gray-400 mb-6 leading-relaxed">
@@ -22,16 +29,34 @@ const Footer = () => {
             </p>
             
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="Facebook">
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
+                title="Facebook"
+              >
                 <span className="text-white font-bold text-sm">f</span>
               </a>
-              <a href="#" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="Instagram">
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
+                title="Instagram"
+              >
                 <span className="text-white font-bold">📷</span>
               </a>
-              <a href="#" className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="YouTube">
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
+                title="YouTube"
+              >
                 <span className="text-white font-bold">📹</span>
               </a>
-              <a href="https://wa.me/919035106677" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" title="WhatsApp">
+              <a 
+                href="https://wa.me/919035106677" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
+                title="WhatsApp"
+              >
                 <span className="text-white font-bold">💬</span>
               </a>
             </div>
@@ -42,27 +67,34 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-white transition-colors duration-200">
+                <button 
+                  onClick={() => scrollToSection('home')} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
                   Home
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('about')} className="text-gray-400 hover:text-white transition-colors duration-200">
+                <button 
+                  onClick={() => scrollToSection('about')} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
                   About Us
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('services')} className="text-gray-400 hover:text-white transition-colors duration-200">
+                <button 
+                  onClick={() => scrollToSection('services')} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
                   Event Services
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('props')} className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Shop Props
-                </button>
-              </li>
-              <li>
-                <button onClick={() => scrollToSection('contact')} className="text-gray-400 hover:text-white transition-colors duration-200">
+                <button 
+                  onClick={() => scrollToSection('contact')} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
                   Contact Us
                 </button>
               </li>
@@ -117,6 +149,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
