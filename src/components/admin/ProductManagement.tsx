@@ -19,6 +19,7 @@ interface Product {
   description: string;
   price: number;
   image_url: string;
+  category_id: string;
   stock_quantity: number;
   is_active: boolean;
   categories: { name: string } | null;
