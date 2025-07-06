@@ -1,4 +1,6 @@
 
+import { Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
+
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -30,25 +32,31 @@ const Footer = () => {
             
             <div className="flex space-x-4">
               <a 
-                href="#" 
+                href="https://www.facebook.com/myballoonsjayanagar" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
                 title="Facebook"
               >
-                <span className="text-white font-bold text-sm">f</span>
+                <Facebook size={18} className="text-white" />
               </a>
               <a 
-                href="#" 
+                href="https://www.instagram.com/myballoonsjayanagar" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
                 title="Instagram"
               >
-                <span className="text-white font-bold">📷</span>
+                <Instagram size={18} className="text-white" />
               </a>
               <a 
-                href="#" 
+                href="https://www.youtube.com/@myballoonsjayanagar" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
                 title="YouTube"
               >
-                <span className="text-white font-bold">📹</span>
+                <Youtube size={18} className="text-white" />
               </a>
               <a 
                 href="https://wa.me/919035106677" 
@@ -57,7 +65,7 @@ const Footer = () => {
                 className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200" 
                 title="WhatsApp"
               >
-                <span className="text-white font-bold">💬</span>
+                <MessageCircle size={18} className="text-white" />
               </a>
             </div>
           </div>
