@@ -1,260 +1,247 @@
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Mail, Phone, MapPin, Calendar, MessageSquare, Send } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
-  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
     email: '',
+    phone: '',
     eventType: '',
-    eventDate: '',
     location: '',
     message: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSelectChange = (value: string) => {
-    setFormData({
-      ...formData,
-      eventType: value
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
+    if (!formData.name || !formData.email) {
+      toast.error('Please fill in required fields');
+      return;
+    }
 
-    toast({
-      title: "Message Sent Successfully! 🎉",
-      description: "Thank you for your inquiry. We'll get back to you within 24 hours to discuss your event details.",
-    });
+    setIsSubmitting(true);
+    
+    try {
+      const { error } = await supabase
+        .from('contact_forms')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          event_type: formData.eventType,
+          location: formData.location,
+          message: formData.message
+        });
 
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      eventType: '',
-      eventDate: '',
-      location: '',
-      message: ''
-    });
+      if (error) throw error;
+
+      // Log for email simulation
+      console.log('Contact form submitted - Email would be sent to myballoonsjayanagar@gmail.com:', formData);
+      
+      toast.success('Thank you! We\'ll get back to you within 24 hours.');
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        eventType: '',
+        location: '',
+        message: ''
+      });
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">📋 Let's Talk About</span> <span className="text-gray-800">Your Celebration</span>
+            <span className="text-gradient">Let's Plan</span>
+            <span className="text-gray-800"> Your Event</span>
           </h2>
-          
-          <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
-          
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Ready to plan your perfect celebration? Fill out the form below and let's start 
-            creating magical memories together!
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Ready to create unforgettable memories? Share your event details with us, 
+            and our expert team will bring your vision to life!
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Information */}
-          <div className="space-y-8">
-            <Card className="p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Contact Information */}
+            <div className="space-y-8">
+              <Card className="border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-2xl text-gray-800">Get in Touch</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-brand-red rounded-full flex items-center justify-center">
+                      <Phone className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Call Us</p>
+                      <p className="text-gray-600">+91-9035106677</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center">
+                      <Mail className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Email Us</p>
+                      <p className="text-gray-600">myballoonsjayanagar@gmail.com</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center flex-shrink-0">
+                      <MapPin className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Visit Us</p>
+                      <p className="text-gray-600 leading-relaxed">
+                        Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal,
+                        Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                      <Calendar className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">Working Hours</p>
+                      <p className="text-gray-600">Mon-Sun: 9AM-9PM</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Contact Form */}
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-center mb-6">
-                  Contact Information
+                <CardTitle className="text-2xl text-gray-800 flex items-center space-x-2">
+                  <MessageSquare className="h-6 w-6 text-brand-red" />
+                  <span>Send us a Message</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">📞</span>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">Full Name *</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        placeholder="Your full name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        placeholder="your@email.com"
+                        required
+                      />
+                    </div>
                   </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="+91 XXXXX XXXXX"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="eventType">Event Type</Label>
+                      <Select value={formData.eventType} onValueChange={(value) => handleInputChange('eventType', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select event type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="birthday">Birthday Party</SelectItem>
+                          <SelectItem value="wedding">Wedding</SelectItem>
+                          <SelectItem value="baby-shower">Baby Shower</SelectItem>
+                          <SelectItem value="anniversary">Anniversary</SelectItem>
+                          <SelectItem value="corporate">Corporate Event</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  
                   <div>
-                    <h3 className="font-semibold text-gray-800">Phone</h3>
-                    <p className="text-gray-600">+91-9035106677</p>
+                    <Label htmlFor="location">Event Location</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => handleInputChange('location', e.target.value)}
+                      placeholder="Where will your event take place?"
+                    />
                   </div>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-brand-yellow/10 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">✉️</span>
-                  </div>
+                  
                   <div>
-                    <h3 className="font-semibold text-gray-800">Email</h3>
-                    <p className="text-gray-600">info@myballons.in</p>
+                    <Label htmlFor="message">Tell us about your event</Label>
+                    <Textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      placeholder="Share your event details, preferences, budget, or any special requirements..."
+                      rows={4}
+                    />
                   </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">📍</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">Location</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal, 
-                      Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">💬</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">WhatsApp</h3>
-                    <p className="text-gray-600">Quick Response Available</p>
-                  </div>
-                </div>
+                  
+                  <Button 
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-brand-red hover:bg-red-600 text-white py-3 text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    {isSubmitting ? (
+                      'Sending...'
+                    ) : (
+                      <>
+                        <Send className="h-5 w-5 mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
-
-            <div className="bg-gradient-soft p-8 rounded-2xl text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Emergency Events?</h3>
-              <p className="text-gray-600 mb-6">
-                Need last-minute planning? We offer emergency event services for urgent celebrations!
-              </p>
-              <Button className="bg-brand-red hover:bg-red-600 text-white px-6 py-3 rounded-full font-semibold">
-                Call Now for Emergency
-              </Button>
-            </div>
           </div>
-
-          {/* Contact Form */}
-          <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">
-                Plan Your Event
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="name">Full Name *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                  />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="eventType">Type of Event *</Label>
-                    <Select onValueChange={handleSelectChange}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select event type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="birthday">Birthday</SelectItem>
-                        <SelectItem value="wedding">Wedding</SelectItem>
-                        <SelectItem value="corporate">Corporate</SelectItem>
-                        <SelectItem value="baby-shower">Baby Shower</SelectItem>
-                        <SelectItem value="others">Others</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="eventDate">Event Date</Label>
-                    <Input
-                      id="eventDate"
-                      name="eventDate"
-                      type="date"
-                      value={formData.eventDate}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="location">City/Location *</Label>
-                  <Input
-                    id="location"
-                    name="location"
-                    type="text"
-                    required
-                    value={formData.location}
-                    onChange={handleInputChange}
-                    placeholder="Enter your city or event location"
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Your Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder="Describe your event vision, guest count, theme preferences, budget range, etc."
-                    className="mt-1"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-festive text-white font-semibold py-4 rounded-full text-lg transition-all duration-300 hover:scale-105 shadow-lg"
-                >
-                  🎉 Submit Inquiry
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </section>
