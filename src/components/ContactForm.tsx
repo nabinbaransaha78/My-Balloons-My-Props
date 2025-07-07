@@ -6,12 +6,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin, Calendar, MessageSquare, Send } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Mail, Phone, MapPin, Calendar as CalendarIcon, MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [eventDate, setEventDate] = useState<Date>();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,13 +49,16 @@ const ContactForm = () => {
           phone: formData.phone,
           event_type: formData.eventType,
           location: formData.location,
-          message: formData.message
+          message: `${formData.message}${eventDate ? `\n\nEvent Date: ${format(eventDate, 'PPP')}` : ''}`
         });
 
       if (error) throw error;
 
       // Log for email simulation
-      console.log('Contact form submitted - Email would be sent to myballoonsjayanagar@gmail.com:', formData);
+      console.log('Contact form submitted - Email would be sent to myballoonsjayanagar@gmail.com:', {
+        ...formData,
+        eventDate: eventDate ? format(eventDate, 'PPP') : null
+      });
       
       toast.success('Thank you! We\'ll get back to you within 24 hours.');
       
@@ -63,6 +71,7 @@ const ContactForm = () => {
         location: '',
         message: ''
       });
+      setEventDate(undefined);
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -203,14 +212,43 @@ const ContactForm = () => {
                     </div>
                   </div>
                   
-                  <div>
-                    <Label htmlFor="location">Event Location</Label>
-                    <Input
-                      id="location"
-                      value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
-                      placeholder="Where will your event take place?"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="location">Event Location</Label>
+                      <Input
+                        id="location"
+                        value={formData.location}
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        placeholder="Where will your event take place?"
+                      />
+                    </div>
+                    <div>
+                      <Label>Event Date</Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !eventDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {eventDate ? format(eventDate, "PPP") : <span>Pick event date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={eventDate}
+                            onSelect={setEventDate}
+                            disabled={(date) => date < new Date()}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
                   </div>
                   
                   <div>
