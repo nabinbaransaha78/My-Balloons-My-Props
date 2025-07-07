@@ -139,7 +139,7 @@ const ContactForm = () => {
                   
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                      <Calendar className="h-6 w-6 text-white" />
+                      <CalendarIcon className="h-6 w-6 text-white" />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">Working Hours</p>
@@ -237,7 +237,7 @@ const ContactForm = () => {
                             {eventDate ? format(eventDate, "PPP") : <span>Pick event date</span>}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
+                        <PopoverContent className="w-auto p-0 z-50" align="start" side="top" sideOffset={5}>
                           <Calendar
                             mode="single"
                             selected={eventDate}
