@@ -2,7 +2,7 @@
 const Gallery = () => {
   const galleryImages = [
     {
-      url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop',
+      url: '/lovable-uploads/d85a72bc-eea7-4ede-9fae-e63447a9103c.png',
       title: 'Birthday Balloon Setups',
       description: 'Colorful balloon decorations for magical birthday parties'
     },
@@ -55,7 +55,7 @@ const Gallery = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="gallery" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -71,17 +71,24 @@ const Gallery = () => {
         </div>
 
         {/* Image Gallery */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {galleryImages.map((image, index) => (
             <div 
               key={index}
-              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-gray-100"
             >
-              <img 
-                src={image.url} 
-                alt={image.title}
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-              />
+              <div className="aspect-[4/3] w-full">
+                <img 
+                  src={image.url} 
+                  alt={image.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop';
+                  }}
+                />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-4 left-4 text-white">
                   <h3 className="text-xl font-semibold mb-1">{image.title}</h3>
@@ -98,11 +105,11 @@ const Gallery = () => {
             What Our Clients Say
           </h3>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={index}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
