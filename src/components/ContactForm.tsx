@@ -237,14 +237,14 @@ const ContactForm = () => {
                             {eventDate ? format(eventDate, "PPP") : <span>Pick event date</span>}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 z-50" align="start" side="top" sideOffset={5}>
+                        <PopoverContent className="w-auto p-0 z-[60]" align="start" side="top" sideOffset={8}>
                           <Calendar
                             mode="single"
                             selected={eventDate}
                             onSelect={setEventDate}
                             disabled={(date) => date < new Date()}
                             initialFocus
-                            className={cn("p-3 pointer-events-auto")}
+                            className="p-3"
                           />
                         </PopoverContent>
                       </Popover>
