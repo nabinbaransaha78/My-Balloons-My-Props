@@ -141,31 +141,31 @@ const PropsStore = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      {/* Mobile-Optimized Store Header */}
+      {/* Fixed Store Header with proper alignment */}
       <div className="bg-white shadow-sm border-b pt-16 lg:pt-20 sticky top-16 lg:top-20 z-30">
-        <div className="container mx-auto px-4 py-3">
+        <div className="max-w-7xl mx-auto px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/')}
-                className="flex items-center space-x-1"
+                className="flex items-center space-x-2"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">Back</span>
+                <span className="hidden sm:inline">Back to Home</span>
               </Button>
               <div>
-                <h1 className="text-xl lg:text-3xl font-bold text-gray-900">Props Store</h1>
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Props Store</h1>
                 <p className="text-sm text-gray-600 hidden sm:block">Find the perfect props for your celebration</p>
               </div>
             </div>
             
             <Button
               onClick={() => setIsCartOpen(true)}
-              className="relative bg-brand-red hover:bg-red-600 px-3 py-2"
+              className="relative bg-brand-red hover:bg-red-600 px-4 py-2"
             >
-              <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5 mr-1 lg:mr-2" />
+              <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5 mr-2" />
               <span className="hidden sm:inline">Cart</span>
               {getTotalItems() > 0 && (
                 <Badge className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center">
@@ -175,9 +175,9 @@ const PropsStore = () => {
             </Button>
           </div>
 
-          {/* Mobile Search and Filter Bar */}
-          <div className="flex gap-2">
-            <div className="relative flex-1">
+          {/* Search and Filter Bar */}
+          <div className="flex gap-3">
+            <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 placeholder="Search products..."
@@ -242,13 +242,14 @@ const PropsStore = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-6">
-          {/* Desktop Sidebar Filters */}
+      {/* Main Content with proper container alignment */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
+        <div className="flex gap-8">
+          {/* Desktop Sidebar Filters - Fixed width and positioning */}
           <div className="hidden lg:block w-64 flex-shrink-0">
-            <Card className="sticky top-32">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+            <Card className="sticky top-40">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center space-x-2 text-lg">
                   <Filter className="h-5 w-5" />
                   <span>Categories</span>
                 </CardTitle>
@@ -275,14 +276,14 @@ const PropsStore = () => {
             </Card>
           </div>
 
-          {/* Products Grid */}
-          <div className="flex-1">
+          {/* Products Grid - Proper alignment and spacing */}
+          <div className="flex-1 min-w-0">
             {productsLoading ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {[...Array(8)].map((_, i) => (
                   <Card key={i} className="animate-pulse">
                     <div className="aspect-square bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-3">
+                    <CardContent className="p-4">
                       <div className="h-4 bg-gray-200 rounded mb-2"></div>
                       <div className="h-3 bg-gray-200 rounded w-2/3"></div>
                     </CardContent>
@@ -291,24 +292,28 @@ const PropsStore = () => {
               </div>
             ) : (
               <>
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-sm text-gray-600">
-                    {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
-                  </p>
-                  {selectedCategory !== 'all' && (
-                    <Badge variant="outline" className="text-xs">
-                      {selectedCategory}
-                    </Badge>
-                  )}
+                {/* Results header with proper alignment */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center space-x-4">
+                    <p className="text-sm text-gray-600">
+                      {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
+                    </p>
+                    {selectedCategory !== 'all' && (
+                      <Badge variant="outline" className="text-xs">
+                        {selectedCategory}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
                 
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-6">
+                {/* Products Grid with consistent spacing */}
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                   {filteredProducts.map((product) => {
                     const cartItem = cart.find(item => item.id === product.id);
                     const cartQuantity = cartItem?.quantity || 0;
                     
                     return (
-                      <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden">
+                      <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden h-full flex flex-col">
                         <div className="relative aspect-square overflow-hidden">
                           <img
                             src={product.image_url || 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'}
@@ -327,14 +332,14 @@ const PropsStore = () => {
                           )}
                         </div>
                         
-                        <CardContent className="p-3">
-                          <h3 className="font-semibold text-sm lg:text-base mb-1 line-clamp-2 leading-tight">
+                        <CardContent className="p-3 lg:p-4 flex-1 flex flex-col">
+                          <h3 className="font-semibold text-sm lg:text-base mb-2 line-clamp-2 leading-tight flex-1">
                             {product.name}
                           </h3>
-                          <p className="text-gray-600 text-xs lg:text-sm mb-2 line-clamp-2 hidden lg:block">
+                          <p className="text-gray-600 text-xs lg:text-sm mb-3 line-clamp-2 hidden lg:block">
                             {product.description}
                           </p>
-                          <div className="flex justify-between items-center">
+                          <div className="flex justify-between items-center mt-auto">
                             <span className="text-lg lg:text-xl font-bold text-brand-red">
                               ₹{product.price}
                             </span>
@@ -344,10 +349,10 @@ const PropsStore = () => {
                           </div>
                         </CardContent>
                         
-                        <CardFooter className="p-3 pt-0">
+                        <CardFooter className="p-3 lg:p-4 pt-0">
                           {cartQuantity > 0 ? (
                             <div className="flex items-center justify-between w-full">
-                              <div className="flex items-center space-x-1 lg:space-x-2">
+                              <div className="flex items-center space-x-2">
                                 <Button
                                   size="sm"
                                   variant="outline"
@@ -388,13 +393,14 @@ const PropsStore = () => {
                   })}
                 </div>
                 
+                {/* Empty state with proper centering */}
                 {filteredProducts.length === 0 && (
-                  <div className="text-center py-12">
+                  <div className="text-center py-16">
                     <div className="text-gray-400 mb-4">
                       <ShoppingCart className="h-16 w-16 mx-auto mb-4" />
                     </div>
                     <p className="text-gray-500 text-lg mb-2">No products found</p>
-                    <p className="text-gray-400 text-sm">Try adjusting your search or filters</p>
+                    <p className="text-gray-400 text-sm mb-6">Try adjusting your search or filters</p>
                     {(searchQuery || selectedCategory !== 'all') && (
                       <Button 
                         variant="outline" 
