@@ -6,12 +6,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Plus, Minus, Filter, ArrowLeft, Search, X } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Filter, ArrowLeft, Search, X, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CartModal from '@/components/CartModal';
+import OffersCarousel from '@/components/store/OffersCarousel';
+import ProductRecommendations from '@/components/store/ProductRecommendations';
+import WishlistManager from '@/components/store/WishlistManager';
+import WhatsAppSupport from '@/components/store/WhatsAppSupport';
 import {
   Sheet,
   SheetContent,
@@ -47,6 +51,7 @@ const PropsStore = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [showWishlist, setShowWishlist] = useState(false);
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -161,18 +166,30 @@ const PropsStore = () => {
               </div>
             </div>
             
-            <Button
-              onClick={() => setIsCartOpen(true)}
-              className="relative bg-brand-red hover:bg-red-600 px-4 py-2"
-            >
-              <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5 mr-2" />
-              <span className="hidden sm:inline">Cart</span>
-              {getTotalItems() > 0 && (
-                <Badge className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center">
-                  {getTotalItems()}
-                </Badge>
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowWishlist(!showWishlist)}
+                className="relative"
+              >
+                <Heart className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">Wishlist</span>
+              </Button>
+              
+              <Button
+                onClick={() => setIsCartOpen(true)}
+                className="relative bg-brand-red hover:bg-red-600 px-4 py-2"
+              >
+                <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5 mr-2" />
+                <span className="hidden sm:inline">Cart</span>
+                {getTotalItems() > 0 && (
+                  <Badge className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center">
+                    {getTotalItems()}
+                  </Badge>
+                )}
+              </Button>
+            </div>
           </div>
 
           {/* Search and Filter Bar */}
@@ -242,10 +259,28 @@ const PropsStore = () => {
         </div>
       </div>
 
-      {/* Main Content with proper container alignment */}
+      {/* Offers Carousel */}
       <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
-        <div className="flex gap-8">
-          {/* Desktop Sidebar Filters - Fixed width and positioning */}
+        <OffersCarousel />
+      </div>
+
+      {/* Main Content with proper container alignment */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+        {showWishlist ? (
+          <div className="mb-6">
+            <WishlistManager 
+              showWishlistView={true} 
+              onAddToCart={(product) => {
+                addToCart(product);
+                // Force re-render of wishlist component
+                setShowWishlist(false);
+                setTimeout(() => setShowWishlist(true), 100);
+              }} 
+            />
+          </div>
+        ) : (
+          <div className="flex gap-8">
+            {/* Desktop Sidebar Filters - Fixed width and positioning */}
           <div className="hidden lg:block w-64 flex-shrink-0">
             <Card className="sticky top-40">
               <CardHeader className="pb-4">
@@ -276,8 +311,8 @@ const PropsStore = () => {
             </Card>
           </div>
 
-          {/* Products Grid - Proper alignment and spacing */}
-          <div className="flex-1 min-w-0">
+            {/* Products Grid - Proper alignment and spacing */}
+            <div className="flex-1 min-w-0">
             {productsLoading ? (
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {[...Array(8)].map((_, i) => (
@@ -320,13 +355,16 @@ const PropsStore = () => {
                             alt={product.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
+                          
+                          <WishlistManager product={product} onAddToCart={addToCart} />
+                          
                           {product.categories && (
-                            <Badge className="absolute top-2 right-2 bg-brand-blue text-white text-xs">
+                            <Badge className="absolute top-2 left-2 bg-brand-blue text-white text-xs">
                               {product.categories.name}
                             </Badge>
                           )}
                           {product.stock_quantity < 5 && product.stock_quantity > 0 && (
-                            <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
+                            <Badge className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs">
                               Only {product.stock_quantity} left
                             </Badge>
                           )}
@@ -415,10 +453,19 @@ const PropsStore = () => {
                     )}
                   </div>
                 )}
+                {/* Recommendations Section */}
+                {filteredProducts.length > 0 && selectedCategory !== 'all' && (
+                  <ProductRecommendations
+                    categoryName={selectedCategory}
+                    onAddToCart={addToCart}
+                    title="More from this Category"
+                  />
+                )}
               </>
             )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <CartModal
@@ -428,6 +475,8 @@ const PropsStore = () => {
         updateQuantity={updateCartQuantity}
         totalPrice={getTotalPrice()}
       />
+
+      <WhatsAppSupport />
 
       <Footer />
     </div>
