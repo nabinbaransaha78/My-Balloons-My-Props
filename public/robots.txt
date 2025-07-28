@@ -12,3 +12,20 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://myballoons.in/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /props-store
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg

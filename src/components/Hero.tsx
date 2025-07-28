@@ -36,14 +36,14 @@ const Hero = () => {
           </div>
           
           {/* Main heading */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight" itemProp="name">
             <span className="text-gradient">Celebrations</span>
             <br />
             <span className="text-gray-800">Made Magical</span>
           </h1>
           
           {/* Tagline */}
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
+          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium" itemProp="description">
             From intimate birthday parties to grand weddings, we bring your celebrations to life with 
             <span className="text-brand-red font-semibold"> expert event management</span> and 
             <span className="text-brand-blue font-semibold"> premium party props</span>

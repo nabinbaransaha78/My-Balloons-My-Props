@@ -1,22 +1,22 @@
 
 const About = () => {
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className="py-20 bg-white" itemScope itemType="https://schema.org/AboutPage">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" itemProp="headline">
             <span className="text-gradient">🎈 About</span> <span className="text-gray-800">MY Balloons MY Prop's</span>
           </h2>
           
           <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
           
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-600 mb-8 leading-relaxed" itemProp="description">
             We are your one-stop destination for all things celebration! 
             At <strong>MY Balloons MY Prop's</strong>, we specialize in <em>event management</em> and <em>decor prop sales</em> to make your moments truly magical. 
             Whether it's a fairy-tale wedding, a themed birthday, or a corporate event, we bring creativity, color, and class to every occasion.
           </p>
           
-          <p className="text-lg text-gray-600 mb-12 leading-relaxed">
+          <p className="text-lg text-gray-600 mb-12 leading-relaxed" itemProp="text">
             With years of experience and a love for happiness, we've become a trusted name for joyful planning and delightful props.
           </p>
           

@@ -110,7 +110,7 @@ const ContactForm = () => {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">Call Us</p>
-                      <p className="text-gray-600">+91-9035106677</p>
+                      <a href="tel:+919035106677" className="text-gray-600 hover:text-brand-red transition-colors">+91-9035106677</a>
                     </div>
                   </div>
                   
@@ -120,7 +120,7 @@ const ContactForm = () => {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">Email Us</p>
-                      <p className="text-gray-600">myballoonsjayanagar@gmail.com</p>
+                      <a href="mailto:myballoonsjayanagar@gmail.com" className="text-gray-600 hover:text-brand-red transition-colors">myballoonsjayanagar@gmail.com</a>
                     </div>
                   </div>
                   

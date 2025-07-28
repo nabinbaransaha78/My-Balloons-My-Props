@@ -36,13 +36,13 @@ const Services = () => {
   return <section id="services" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" itemProp="headline">
             <span className="text-gradient">✨ What We</span> <span className="text-gray-800">Offer</span>
           </h2>
           
           <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
           
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4" itemProp="description">
             Each service comes with <strong>customizable packages</strong> and end-to-end management.
           </p>
           <p className="text-lg text-gray-600">
@@ -50,17 +50,17 @@ const Services = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12" itemScope itemType="https://schema.org/ItemList">
           {services.map((service, index) => <div key={index} className={`bg-gradient-to-br ${service.color} p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group`}>
               <div className="text-5xl mb-6 group-hover:animate-bounce-gentle">
                 {service.icon}
               </div>
               
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4" itemProp="name">
                 {service.title}
               </h3>
               
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed" itemProp="description">
                 {service.description}
               </p>
               

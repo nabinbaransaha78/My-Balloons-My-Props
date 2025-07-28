@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const WhatsAppSupport = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const whatsappNumber = "919876543210"; // Replace with actual business number
+  const whatsappNumber = "919035106677";
   const businessName = "MY Balloons MY Prop's";
 
   const quickMessages = [
