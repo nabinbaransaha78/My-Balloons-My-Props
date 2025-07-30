@@ -37,59 +37,59 @@ const Services = () => {
     }
   };
   return <section id="services" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 lg:px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" itemProp="headline">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6" itemProp="headline">
             <span className="text-gradient">✨ What We</span> <span className="text-gray-800">Offer</span>
           </h2>
           
-          <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
+          <div className="w-16 lg:w-24 h-1 gradient-festive mx-auto mb-6 lg:mb-8 rounded-full"></div>
           
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4" itemProp="description">
+          <p className="text-base lg:text-xl text-gray-600 max-w-2xl mx-auto mb-4 px-2" itemProp="description">
             Each service comes with <strong>customizable packages</strong> and end-to-end management.
           </p>
-          <p className="text-lg text-gray-600">
+          <p className="text-sm lg:text-lg text-gray-600 px-2">
             We bring creativity, color, and class to every occasion.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12" itemScope itemType="https://schema.org/ItemList">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 mb-12" itemScope itemType="https://schema.org/ItemList">
           {services.map((service, index) => <div key={index} className={`bg-gradient-to-br ${service.color} p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group`}>
-              <div className="text-5xl mb-6 group-hover:animate-bounce-gentle">
+              <div className="text-4xl lg:text-5xl mb-4 lg:mb-6 group-hover:animate-bounce-gentle">
                 {service.icon}
               </div>
               
-              <h3 className="text-2xl font-bold text-gray-800 mb-4" itemProp="name">
+              <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3 lg:mb-4" itemProp="name">
                 {service.title}
               </h3>
               
-              <p className="text-gray-600 mb-6 leading-relaxed" itemProp="description">
+              <p className="text-sm lg:text-base text-gray-600 mb-4 lg:mb-6 leading-relaxed" itemProp="description">
                 {service.description}
               </p>
               
-              <Button onClick={scrollToContact} className={`${service.buttonColor} text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg w-full`}>
+              <Button onClick={scrollToContact} className={`${service.buttonColor} text-white px-4 lg:px-6 py-2 lg:py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg w-full text-sm lg:text-base`}>
                 Book Now
               </Button>
             </div>)}
         </div>
 
         <div className="text-center">
-          <div className="bg-gradient-soft p-8 rounded-2xl shadow-lg inline-block max-w-2xl">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Ready to Start Planning?</h3>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-gradient-soft p-6 lg:p-8 rounded-2xl shadow-lg inline-block max-w-2xl mx-4">
+            <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-4">Ready to Start Planning?</h3>
+            <p className="text-sm lg:text-base text-gray-600 mb-6">
               Use our interactive event planner to get instant quotes and timeline estimates for your celebration.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center">
               <Button 
                 onClick={() => navigate('/event-planner')}
-                className="bg-brand-blue hover:bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+                className="bg-brand-blue hover:bg-blue-600 text-white px-4 lg:px-6 py-2 lg:py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg text-sm lg:text-base"
               >
                 Use Event Planner
               </Button>
               <Button 
                 onClick={() => navigate('/gallery')}
                 variant="outline"
-                className="border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+                className="border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white px-4 lg:px-6 py-2 lg:py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg text-sm lg:text-base"
               >
                 View Our Work
               </Button>

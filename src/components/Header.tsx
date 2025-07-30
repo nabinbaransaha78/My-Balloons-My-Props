@@ -1,9 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,25 +23,30 @@ const Header = () => {
         behavior: 'smooth'
       });
     }
+    setIsMobileMenuOpen(false);
   };
 
+  const navigateToPage = (path: string) => {
+    window.location.href = path;
+    setIsMobileMenuOpen(false);
+  };
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3 lg:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <img 
               alt="MY Balloons MY Prop's Logo" 
-              className="h-12 w-auto" 
+              className="h-10 lg:h-12 w-auto" 
               src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png" 
             />
           </div>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             <button 
               onClick={() => scrollToSection('home')} 
               className="text-gray-700 hover:text-brand-red transition-colors font-medium"
@@ -62,14 +69,14 @@ const Header = () => {
               Services
             </button>
             <button 
-              onClick={() => window.location.href = '/gallery'} 
+              onClick={() => navigateToPage('/gallery')} 
               className="text-gray-700 hover:text-brand-yellow transition-colors font-medium"
               aria-label="Go to Gallery page"
             >
               Gallery
             </button>
             <button 
-              onClick={() => window.location.href = '/blog'} 
+              onClick={() => navigateToPage('/blog')} 
               className="text-gray-700 hover:text-brand-blue transition-colors font-medium"
               aria-label="Go to Blog page"
             >
@@ -84,14 +91,80 @@ const Header = () => {
             </button>
           </nav>
 
-          {/* CTA Button */}
-          <Button 
-            onClick={() => scrollToSection('contact')} 
-            className="bg-brand-red hover:bg-red-600 text-white px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg"
-            aria-label="Get a quote for your event"
-          >
-            Get Quote
-          </Button>
+          <div className="flex items-center space-x-3">
+            {/* Desktop CTA Button */}
+            <Button 
+              onClick={() => scrollToSection('contact')} 
+              className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
+              aria-label="Get a quote for your event"
+            >
+              Get Quote
+            </Button>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg border-t">
+            <nav className="container mx-auto px-4 py-4 space-y-3">
+              <button 
+                onClick={() => scrollToSection('home')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-red transition-colors font-medium"
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => scrollToSection('about')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              >
+                About
+              </button>
+              <button 
+                onClick={() => scrollToSection('services')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-blue transition-colors font-medium"
+              >
+                Services
+              </button>
+              <button 
+                onClick={() => navigateToPage('/gallery')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              >
+                Gallery
+              </button>
+              <button 
+                onClick={() => navigateToPage('/blog')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-blue transition-colors font-medium"
+              >
+                Blog
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              >
+                Contact
+              </button>
+              <div className="pt-3 border-t">
+                <Button 
+                  onClick={() => scrollToSection('contact')} 
+                  className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
+                >
+                  Get Quote
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
         </div>
       </div>
     </header>

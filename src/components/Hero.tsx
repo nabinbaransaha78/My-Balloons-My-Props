@@ -31,29 +31,29 @@ const Hero = () => {
             <img 
               src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png" 
               alt="MY Balloons MY Prop's" 
-              className="h-24 mx-auto mb-6"
+              className="h-16 sm:h-20 lg:h-24 mx-auto mb-4 lg:mb-6"
             />
           </div>
           
           {/* Main heading */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight" itemProp="name">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 lg:mb-6 leading-tight" itemProp="name">
             <span className="text-gradient">Celebrations</span>
             <br />
             <span className="text-gray-800">Made Magical</span>
           </h1>
           
           {/* Tagline */}
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium" itemProp="description">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-6 lg:mb-8 max-w-3xl mx-auto leading-relaxed font-medium px-4" itemProp="description">
             From intimate birthday parties to grand weddings, we bring your celebrations to life with 
             <span className="text-brand-red font-semibold"> expert event management</span> and 
             <span className="text-brand-blue font-semibold"> premium party props</span>
           </p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
             <Button 
               onClick={scrollToContact}
-              className="bg-brand-red hover:bg-red-600 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2"
+              className="w-full sm:w-auto bg-brand-red hover:bg-red-600 text-white px-6 lg:px-8 py-3 lg:py-4 rounded-full text-base lg:text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
               <Calendar className="h-5 w-5" />
               <span>Plan Your Event</span>
@@ -63,47 +63,37 @@ const Hero = () => {
             <Button 
               onClick={() => navigate('/props-store')}
               variant="outline"
-              className="border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2"
+              className="w-full sm:w-auto border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white px-6 lg:px-8 py-3 lg:py-4 rounded-full text-base lg:text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
               <ShoppingBag className="h-5 w-5" />
               <span>Shop Props</span>
               <ArrowRight className="h-5 w-5" />
             </Button>
-            
-            <Button 
-              onClick={() => navigate('/event-planner')}
-              variant="outline"
-              className="border-2 border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2"
-            >
-              <Calendar className="h-5 w-5" />
-              <span>Plan Event</span>
-              <ArrowRight className="h-5 w-5" />
-            </Button>
           </div>
           
           {/* Trust indicators */}
-          <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-gray-600">
+          <div className="mt-8 lg:mt-12 flex flex-wrap justify-center items-center gap-4 lg:gap-8 text-gray-600 px-4">
             <div className="flex items-center space-x-2">
-              <span className="text-3xl">🎈</span>
-              <span className="font-medium">500+ Happy Events</span>
+              <span className="text-2xl lg:text-3xl">🎈</span>
+              <span className="font-medium text-sm lg:text-base">500+ Happy Events</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-3xl">⭐</span>
-              <span className="font-medium">5-Star Service</span>
+              <span className="text-2xl lg:text-3xl">⭐</span>
+              <span className="font-medium text-sm lg:text-base">5-Star Service</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-3xl">🚚</span>
-              <span className="font-medium">Bangalore Delivery</span>
+              <span className="text-2xl lg:text-3xl">🚚</span>
+              <span className="font-medium text-sm lg:text-base">Bangalore Delivery</span>
             </div>
           </div>
         </div>
       </div>
       
       {/* Floating decorative elements */}
-      <div className="absolute top-20 left-10 text-6xl animate-bounce text-brand-yellow opacity-60">🎈</div>
-      <div className="absolute top-32 right-16 text-4xl animate-bounce text-brand-red opacity-60" style={{animationDelay: '1s'}}>🎉</div>
-      <div className="absolute bottom-20 left-20 text-5xl animate-bounce text-brand-blue opacity-60" style={{animationDelay: '2s'}}>🎊</div>
-      <div className="absolute bottom-32 right-10 text-6xl animate-bounce text-brand-yellow opacity-60" style={{animationDelay: '0.5s'}}>🎁</div>
+      <div className="hidden lg:block absolute top-20 left-10 text-4xl xl:text-6xl animate-bounce text-brand-yellow opacity-60">🎈</div>
+      <div className="hidden lg:block absolute top-32 right-16 text-3xl xl:text-4xl animate-bounce text-brand-red opacity-60" style={{animationDelay: '1s'}}>🎉</div>
+      <div className="hidden lg:block absolute bottom-20 left-20 text-4xl xl:text-5xl animate-bounce text-brand-blue opacity-60" style={{animationDelay: '2s'}}>🎊</div>
+      <div className="hidden lg:block absolute bottom-32 right-10 text-4xl xl:text-6xl animate-bounce text-brand-yellow opacity-60" style={{animationDelay: '0.5s'}}>🎁</div>
     </section>
   );
 };

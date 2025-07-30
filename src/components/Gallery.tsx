@@ -61,28 +61,28 @@ const Gallery = () => {
 
   return (
     <section id="gallery" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 lg:px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">
             <span className="text-gradient">📸 Moments We've</span> <span className="text-gray-800">Created</span>
           </h2>
           
-          <div className="w-24 h-1 gradient-festive mx-auto mb-8 rounded-full"></div>
+          <div className="w-16 lg:w-24 h-1 gradient-festive mx-auto mb-6 lg:mb-8 rounded-full"></div>
           
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base lg:text-xl text-gray-600 max-w-2xl mx-auto px-2">
             Showcase beautiful photos from past events including birthday balloon setups, 
             wedding entrances, kids' party stages, and customers holding props.
           </p>
         </div>
 
         {/* Image Gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-16 lg:mb-20">
           {galleryImages.map((image, index) => (
             <div 
               key={index}
               className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-gray-100"
             >
-              <div className="aspect-[4/3] w-full">
+              <div className="aspect-square sm:aspect-[4/3] w-full">
                 <img 
                   src={image.url} 
                   alt={image.title}
@@ -95,9 +95,9 @@ const Gallery = () => {
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-semibold mb-1">{image.title}</h3>
-                  <p className="text-sm text-gray-200">{image.description}</p>
+                <div className="absolute bottom-2 lg:bottom-4 left-2 lg:left-4 text-white">
+                  <h3 className="text-lg lg:text-xl font-semibold mb-1">{image.title}</h3>
+                  <p className="text-xs lg:text-sm text-gray-200 hidden sm:block">{image.description}</p>
                 </div>
               </div>
             </div>
@@ -105,10 +105,10 @@ const Gallery = () => {
         </div>
 
         {/* View More Gallery Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 lg:mt-12 px-4">
           <Button 
             onClick={() => navigate('/gallery')}
-            className="bg-brand-blue hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+            className="bg-brand-blue hover:bg-blue-600 text-white px-6 lg:px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg text-sm lg:text-base"
           >
             View Complete Gallery
             <ArrowRight className="h-5 w-5 ml-2" />
@@ -117,29 +117,29 @@ const Gallery = () => {
 
         {/* Testimonials */}
         <div>
-          <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">
+          <h3 className="text-2xl lg:text-3xl font-bold text-center mb-8 lg:mb-12 text-gray-800">
             What Our Clients Say
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={index}
-                className="bg-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-gray-50 p-6 lg:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-brand-yellow text-xl">⭐</span>
+                    <span key={i} className="text-brand-yellow text-lg lg:text-xl">⭐</span>
                   ))}
                 </div>
                 
-                <p className="text-gray-600 mb-6 italic leading-relaxed">
+                <p className="text-sm lg:text-base text-gray-600 mb-4 lg:mb-6 italic leading-relaxed">
                   "{testimonial.text}"
                 </p>
                 
                 <div>
-                  <div className="font-semibold text-gray-800">{testimonial.name}</div>
-                  <div className="text-sm text-gray-500">{testimonial.event}</div>
+                  <div className="font-semibold text-gray-800 text-sm lg:text-base">{testimonial.name}</div>
+                  <div className="text-xs lg:text-sm text-gray-500">{testimonial.event}</div>
                 </div>
               </div>
             ))}
