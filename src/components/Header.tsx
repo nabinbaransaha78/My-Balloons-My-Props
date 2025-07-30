@@ -62,6 +62,20 @@ const Header = () => {
               Services
             </button>
             <button 
+              onClick={() => window.location.href = '/gallery'} 
+              className="text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              aria-label="Go to Gallery page"
+            >
+              Gallery
+            </button>
+            <button 
+              onClick={() => window.location.href = '/blog'} 
+              className="text-gray-700 hover:text-brand-blue transition-colors font-medium"
+              aria-label="Go to Blog page"
+            >
+              Blog
+            </button>
+            <button 
               onClick={() => scrollToSection('contact')} 
               className="text-gray-700 hover:text-brand-yellow transition-colors font-medium"
               aria-label="Go to Contact section"

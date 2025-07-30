@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
 
 const Gallery = () => {
+  const navigate = useNavigate();
+  
   const galleryImages = [
     {
       url: '/lovable-uploads/d85a72bc-eea7-4ede-9fae-e63447a9103c.png',
@@ -97,6 +100,17 @@ const Gallery = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View More Gallery Button */}
+        <div className="text-center mt-12">
+          <Button 
+            onClick={() => navigate('/gallery')}
+            className="bg-brand-blue hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+          >
+            View Complete Gallery
+            <ArrowRight className="h-5 w-5 ml-2" />
+          </Button>
         </div>
 
         {/* Testimonials */}

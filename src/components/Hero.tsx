@@ -69,6 +69,16 @@ const Hero = () => {
               <span>Shop Props</span>
               <ArrowRight className="h-5 w-5" />
             </Button>
+            
+            <Button 
+              onClick={() => navigate('/event-planner')}
+              variant="outline"
+              className="border-2 border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2"
+            >
+              <Calendar className="h-5 w-5" />
+              <span>Plan Event</span>
+              <ArrowRight className="h-5 w-5" />
+            </Button>
           </div>
           
           {/* Trust indicators */}

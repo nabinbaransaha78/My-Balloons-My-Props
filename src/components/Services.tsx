@@ -1,5 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 const Services = () => {
+  const navigate = useNavigate();
+  
   const services = [{
     icon: '🎂',
     title: 'Birthday Party Planning',
@@ -71,7 +74,27 @@ const Services = () => {
         </div>
 
         <div className="text-center">
-          
+          <div className="bg-gradient-soft p-8 rounded-2xl shadow-lg inline-block max-w-2xl">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Ready to Start Planning?</h3>
+            <p className="text-gray-600 mb-6">
+              Use our interactive event planner to get instant quotes and timeline estimates for your celebration.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                onClick={() => navigate('/event-planner')}
+                className="bg-brand-blue hover:bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                Use Event Planner
+              </Button>
+              <Button 
+                onClick={() => navigate('/gallery')}
+                variant="outline"
+                className="border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                View Our Work
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </section>;

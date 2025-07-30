@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
+  
   return (
     <section id="about" className="py-20 bg-white" itemScope itemType="https://schema.org/AboutPage">
       <div className="container mx-auto px-4">
@@ -41,6 +44,54 @@ const About = () => {
                 Shop premium party supplies and photo props online. From balloons to banners, 
                 we've got everything you need to make your celebration special.
               </p>
+            </div>
+          </div>
+          
+          {/* Additional Engagement Section */}
+          <div className="mt-16 grid md:grid-cols-3 gap-8">
+            <div className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-4xl mb-4">📚</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Event Planning Blog</h3>
+              <p className="text-gray-600 mb-4">
+                Get expert tips, trends, and inspiration for your next celebration.
+              </p>
+              <Button 
+                onClick={() => navigate('/blog')}
+                variant="outline" 
+                className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+              >
+                Read Our Blog
+              </Button>
+            </div>
+            
+            <div className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Event Planner Tool</h3>
+              <p className="text-gray-600 mb-4">
+                Use our interactive planner to estimate costs and plan your event.
+              </p>
+              <Button 
+                onClick={() => navigate('/event-planner')}
+                variant="outline" 
+                className="border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-white"
+              >
+                Plan Your Event
+              </Button>
+            </div>
+            
+            <div className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-4xl mb-4">📸</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Complete Gallery</h3>
+              <p className="text-gray-600 mb-4">
+                Explore our extensive portfolio of successful events and celebrations.
+              </p>
+              <Button 
+                onClick={() => navigate('/gallery')}
+                variant="outline" 
+                className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
+              >
+                View Gallery
+              </Button>
             </div>
           </div>
         </div>

@@ -101,6 +101,30 @@ const Footer = () => {
                 </button>
               </li>
               <li>
+                <a 
+                  href="/gallery" 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  Gallery
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="/blog" 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="/event-planner" 
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  Event Planner
+                </a>
+              </li>
+              <li>
                 <button 
                   onClick={() => scrollToSection('contact')} 
                   className="text-gray-400 hover:text-white transition-colors duration-200"
