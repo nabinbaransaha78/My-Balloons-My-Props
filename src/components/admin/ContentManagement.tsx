@@ -85,7 +85,9 @@ const ContentManagement = () => {
       setFormData({ section: '', title: '', content: '', image_url: '' });
       queryClient.invalidateQueries({ queryKey: ['website-content'] });
     } catch (error) {
-      console.error('Error updating content:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error updating content:', error);
+      }
       toast.error('Failed to update content');
     }
   };

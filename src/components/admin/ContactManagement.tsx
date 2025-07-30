@@ -49,7 +49,9 @@ const ContactManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-contacts'] });
       queryClient.invalidateQueries({ queryKey: ['admin-stats'] });
     } catch (error) {
-      console.error('Error marking message as read:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error marking message as read:', error);
+      }
       toast.error('Failed to mark message as read');
     }
   };
