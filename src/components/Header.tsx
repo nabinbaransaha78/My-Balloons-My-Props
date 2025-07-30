@@ -2,8 +2,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -17,17 +19,31 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth'
-      });
+    // If we're not on the home page, navigate to home first
+    if (window.location.pathname !== '/') {
+      navigate('/', { replace: true });
+      // Wait for navigation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
     }
     setIsMobileMenuOpen(false);
   };
 
   const navigateToPage = (path: string) => {
-    window.location.href = path;
+    navigate(path);
     setIsMobileMenuOpen(false);
   };
   return (
@@ -38,11 +54,16 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <img 
-              alt="MY Balloons MY Prop's Logo" 
-              className="h-10 lg:h-12 w-auto" 
-              src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png" 
-            />
+            <button 
+              onClick={() => navigate('/')}
+              className="flex items-center hover:opacity-80 transition-opacity"
+            >
+              <img 
+                alt="MY Balloons MY Prop's Logo" 
+                className="h-10 lg:h-12 w-auto" 
+                src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png" 
+              />
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -94,11 +115,11 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             {/* Desktop CTA Button */}
             <Button 
-              onClick={() => scrollToSection('contact')} 
+              onClick={() => navigateToPage('/props-store')}
               className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
               aria-label="Get a quote for your event"
             >
-              Get Quote
+              Shop Props
             </Button>
 
             {/* Mobile Menu Button */}
@@ -156,10 +177,10 @@ const Header = () => {
               </button>
               <div className="pt-3 border-t">
                 <Button 
-                  onClick={() => scrollToSection('contact')} 
+                  onClick={() => navigateToPage('/props-store')}
                   className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
                 >
-                  Get Quote
+                  Shop Props
                 </Button>
               </div>
             </nav>
