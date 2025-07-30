@@ -4,8 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import CheckoutForm from './CheckoutForm';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+}
+
 const PropsStore = () => {
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
 
   const products = [
@@ -53,7 +61,7 @@ const PropsStore = () => {
     }
   ];
 
-  const handleBuyNow = (product: any) => {
+  const handleBuyNow = (product: Product) => {
     setSelectedProduct(product);
     setShowCheckout(true);
   };
