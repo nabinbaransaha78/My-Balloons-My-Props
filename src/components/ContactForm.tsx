@@ -74,7 +74,9 @@ const ContactForm = () => {
       setEventDate(undefined);
       
     } catch (error) {
-      console.error('Error submitting form:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error submitting form:', error);
+      }
       toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);

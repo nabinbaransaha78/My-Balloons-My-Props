@@ -147,7 +147,9 @@ const ProductManagement = () => {
       setIsDialogOpen(false);
       resetForm();
     } catch (error) {
-      console.error('Error saving product:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error saving product:', error);
+      }
       toast.error('Failed to save product');
     }
   };
@@ -168,7 +170,9 @@ const ProductManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['admin-stats'] });
     } catch (error) {
-      console.error('Error deleting product:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error deleting product:', error);
+      }
       toast.error('Failed to delete product');
     }
   };

@@ -17,6 +17,13 @@ interface Review {
   created_at: string;
 }
 
+interface ReviewFormData {
+  name: string;
+  email: string;
+  rating: number;
+  review: string;
+}
+
 interface ProductReviewsProps {
   productId: string;
   productName: string;
@@ -49,7 +56,7 @@ const ProductReviews = ({ productId, productName }: ProductReviewsProps) => {
   });
 
   const submitReviewMutation = useMutation({
-    mutationFn: async (reviewData: any) => {
+    mutationFn: async (reviewData: ReviewFormData) => {
       const { error } = await supabase
         .from('reviews')
         .insert([{

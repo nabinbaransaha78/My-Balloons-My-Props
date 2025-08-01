@@ -113,7 +113,9 @@ const CartModal = ({ isOpen, onClose, cart, updateQuantity, totalPrice }: CartMo
       window.location.reload();
       
     } catch (error) {
-      console.error('Error placing order:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error placing order:', error);
+      }
       toast.error('Failed to place order. Please try again.');
     } finally {
       setIsSubmitting(false);

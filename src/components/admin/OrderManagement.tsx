@@ -73,7 +73,9 @@ const OrderManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
       queryClient.invalidateQueries({ queryKey: ['admin-stats'] });
     } catch (error) {
-      console.error('Error fulfilling order:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fulfilling order:', error);
+      }
       toast.error('Failed to fulfill order');
     }
   };

@@ -94,7 +94,9 @@ const GalleryManagement = () => {
       setFormData({ title: '', image_url: '', category: 'birthday', is_featured: false });
       queryClient.invalidateQueries({ queryKey: ['gallery-images'] });
     } catch (error) {
-      console.error('Error adding image:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error adding image:', error);
+      }
       toast.error('Failed to add image');
     }
   };
@@ -107,7 +109,9 @@ const GalleryManagement = () => {
       toast.success('Image deleted successfully!');
       queryClient.invalidateQueries({ queryKey: ['gallery-images'] });
     } catch (error) {
-      console.error('Error deleting image:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error deleting image:', error);
+      }
       toast.error('Failed to delete image');
     }
   };
@@ -118,7 +122,9 @@ const GalleryManagement = () => {
       toast.success(`Image ${currentStatus ? 'removed from' : 'added to'} featured!`);
       queryClient.invalidateQueries({ queryKey: ['gallery-images'] });
     } catch (error) {
-      console.error('Error updating featured status:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error updating featured status:', error);
+      }
       toast.error('Failed to update featured status');
     }
   };
