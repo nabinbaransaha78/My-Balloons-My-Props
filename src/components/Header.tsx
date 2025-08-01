@@ -106,6 +106,13 @@ const Header = () => {
               Blog
             </button>
             <button 
+              onClick={() => navigateToPage('/props-store')} 
+              className="text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              aria-label="Go to Props Store"
+            >
+              Shop Props
+            </button>
+            <button 
               onClick={() => scrollToSection('contact')} 
               className="text-gray-700 hover:text-brand-yellow transition-colors font-medium"
               aria-label="Go to Contact section"
@@ -181,6 +188,12 @@ const Header = () => {
                 className="block w-full text-left py-2 text-gray-700 hover:text-brand-blue transition-colors font-medium"
               >
                 Blog
+              </button>
+              <button 
+                onClick={() => navigateToPage('/props-store')} 
+                className="block w-full text-left py-2 text-gray-700 hover:text-brand-yellow transition-colors font-medium"
+              >
+                Shop Props
               </button>
               <button 
                 onClick={() => scrollToSection('contact')} 

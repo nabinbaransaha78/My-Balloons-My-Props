@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -231,18 +230,18 @@ const ProductManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="category">Category</Label>
-                    <Select value={formData.category_id} onValueChange={(value) => handleInputChange('category_id', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <select
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      value={formData.category_id}
+                      onChange={(e) => handleInputChange('category_id', e.target.value)}
+                    >
+                      <option value="">Select category</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <Label htmlFor="stock">Stock Quantity</Label>
@@ -251,6 +250,29 @@ const ProductManagement = () => {
                       type="number"
                       value={formData.stock_quantity}
                       onChange={(e) => handleInputChange('stock_quantity', e.target.value)}
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="sku">SKU</Label>
+                    <Input
+                      id="sku"
+                      value={formData.sku || ''}
+                      onChange={(e) => handleInputChange('sku', e.target.value)}
+                      placeholder="Product SKU"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="weight">Weight (kg)</Label>
+                    <Input
+                      id="weight"
+                      type="number"
+                      step="0.1"
+                      value={formData.weight || ''}
+                      onChange={(e) => handleInputChange('weight', e.target.value)}
+                      placeholder="0.5"
                     />
                   </div>
                 </div>
@@ -265,14 +287,25 @@ const ProductManagement = () => {
                   />
                 </div>
                 
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="is_active"
-                    checked={formData.is_active}
-                    onChange={(e) => handleInputChange('is_active', e.target.checked)}
-                  />
-                  <Label htmlFor="is_active">Active (visible in store)</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="is_active"
+                      checked={formData.is_active}
+                      onChange={(e) => handleInputChange('is_active', e.target.checked)}
+                    />
+                    <Label htmlFor="is_active">Active (visible in store)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="is_featured"
+                      checked={formData.is_featured || false}
+                      onChange={(e) => handleInputChange('is_featured', e.target.checked)}
+                    />
+                    <Label htmlFor="is_featured">Featured Product</Label>
+                  </div>
                 </div>
                 
                 <div className="flex space-x-2">
