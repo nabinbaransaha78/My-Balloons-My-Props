@@ -208,13 +208,12 @@ const Header = () => {
                     Admin Panel
                   </Button>
                 ) : (
-                  <SignInButton mode="modal">
-                    <Button 
-                      className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
-                    >
-                      Login
-                    </Button>
-                  </SignInButton>
+                  <Button
+                    className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
+                    onClick={() => navigate('/login')}
+                  >
+                    Login
+                  </Button>
                 )}
               </div>
             </nav>
