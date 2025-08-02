@@ -131,14 +131,13 @@ const Header = () => {
                 Admin Panel
               </Button>
             ) : (
-              <SignInButton mode="modal">
-                <Button 
-                  className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
-                  aria-label="Login to admin panel"
-                >
-                  Login
-                </Button>
-              </SignInButton>
+              <Button
+                className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
+                aria-label="Login to admin panel"
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
             )}
 
             {/* Mobile Menu Button */}
