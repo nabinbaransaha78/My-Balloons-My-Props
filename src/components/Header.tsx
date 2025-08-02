@@ -6,7 +6,7 @@ import { useAuthFallback } from '@/hooks/useAuthFallback';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useAuthFallback();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
