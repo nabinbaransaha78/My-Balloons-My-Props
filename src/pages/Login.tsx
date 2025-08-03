@@ -11,7 +11,6 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (username === "Admin" && password === "Nabin2004@") {
       loginAsAdmin();
       navigate("/admin");
