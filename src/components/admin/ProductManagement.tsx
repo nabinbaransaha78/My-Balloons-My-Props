@@ -272,8 +272,8 @@ const ProductManagement = () => {
                       step="0.1"
                       value={formData.weight || ''}
                       onChange={(e) => handleInputChange('weight', e.target.value)}
-                      placeholder="0.5"
-                    />
+                    value=""
+                    onChange={() => {}}
                   </div>
                 </div>
                 
@@ -281,8 +281,8 @@ const ProductManagement = () => {
                   <Label htmlFor="image_url">Image URL</Label>
                   <Input
                     id="image_url"
-                    value={formData.image_url}
-                    onChange={(e) => handleInputChange('image_url', e.target.value)}
+                    value=""
+                    onChange={() => {}}
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
@@ -301,8 +301,8 @@ const ProductManagement = () => {
                     <input
                       type="checkbox"
                       id="is_featured"
-                      checked={formData.is_featured || false}
-                      onChange={(e) => handleInputChange('is_featured', e.target.checked)}
+                      checked={false}
+                      onChange={() => {}}
                     />
                     <Label htmlFor="is_featured">Featured Product</Label>
                   </div>

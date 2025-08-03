@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useUser, useOrganization } from '@clerk/clerk-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,8 +11,6 @@ import {
 import { toast } from 'sonner';
 
 const UserManagement = () => {
-  const { user } = useUser();
-  const { organization } = useOrganization();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Mock user data - in real app, fetch from Clerk API
@@ -119,20 +116,17 @@ const UserManagement = () => {
           <Card className="mb-6 border-brand-red">
             <CardContent className="p-4">
               <div className="flex items-center space-x-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={user?.imageUrl} />
-                  <AvatarFallback className="bg-brand-red text-white">
-                    {user?.firstName?.[0]}{user?.lastName?.[0]}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="h-12 w-12 bg-brand-red rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  A
+                </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2">
                     <h3 className="font-semibold text-gray-900">
-                      {user?.firstName} {user?.lastName} (You)
+                      Admin User (You)
                     </h3>
                     <Badge className="bg-brand-red text-white">Current User</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">{user?.emailAddresses[0]?.emailAddress}</p>
+                  <p className="text-sm text-gray-600">admin@myballoons.com</p>
                   <div className="flex items-center space-x-2 mt-1">
                     <Crown className="h-4 w-4 text-yellow-500" />
                     <span className="text-sm text-gray-500">Super Admin</span>

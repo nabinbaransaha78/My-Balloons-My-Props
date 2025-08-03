@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth, UserButton } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,6 @@ import AnalyticsDashboard from '@/components/admin/AnalyticsDashboard';
 import UserManagement from '@/components/admin/UserManagement';
 
 const AdminPanel = () => {
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const { data: stats } = useQuery({
@@ -75,19 +73,15 @@ const AdminPanel = () => {
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-900">
-                  Welcome, {user?.firstName || 'Admin'}
+                  Welcome, Admin
                 </p>
                 <p className="text-xs text-gray-500">
-                  {user?.emailAddresses[0]?.emailAddress}
+                  admin@myballoons.com
                 </p>
               </div>
-              <UserButton 
-                appearance={{
-                  elements: {
-                    avatarBox: 'w-10 h-10'
-                  }
-                }}
-              />
+              <div className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center text-white font-bold">
+                A
+              </div>
             </div>
           </div>
         </div>

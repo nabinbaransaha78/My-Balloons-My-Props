@@ -3,11 +3,9 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, SignInButton } from '@clerk/clerk-react';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isSignedIn } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -123,24 +121,13 @@ const Header = () => {
 
           <div className="flex items-center space-x-3">
             {/* Desktop CTA Button */}
-            {isSignedIn ? (
-              <Button 
-                onClick={() => navigateToPage('/admin')}
-                className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
-                aria-label="Go to admin panel"
-              >
-                Admin Panel
-              </Button>
-            ) : (
-              <SignInButton mode="modal">
-                <Button 
-                  className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
-                  aria-label="Login to admin panel"
-                >
-                  Login
-                </Button>
-              </SignInButton>
-            )}
+            <Button 
+              onClick={() => navigateToPage('/admin')}
+              className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
+              aria-label="Go to admin panel"
+            >
+              Admin Panel
+            </Button>
 
             {/* Mobile Menu Button */}
             <Button
@@ -202,22 +189,12 @@ const Header = () => {
                 Contact
               </button>
               <div className="pt-3 border-t">
-                {isSignedIn ? (
-                  <Button 
-                    onClick={() => navigateToPage('/admin')}
-                    className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
-                  >
-                    Admin Panel
-                  </Button>
-                ) : (
-                  <SignInButton mode="modal">
-                    <Button 
-                      className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
-                    >
-                      Login
-                    </Button>
-                  </SignInButton>
-                )}
+                <Button 
+                  onClick={() => navigateToPage('/admin')}
+                  className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
+                >
+                  Admin Panel
+                </Button>
               </div>
             </nav>
           </div>
