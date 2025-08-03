@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/context/AuthContext';
+import {
+  BarChart3, Package, ShoppingCart, MessageSquare, FileText,
+  Image, Settings, Users, TrendingUp, DollarSign, Eye, Plus
+} from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { 
-  BarChart3, Package, ShoppingCart, MessageSquare, FileText, 
-  Image, Settings, Users, TrendingUp, DollarSign, Eye, Plus
-} from 'lucide-react';
+
 import ProductManagement from '@/components/admin/ProductManagement';
 import OrderManagement from '@/components/admin/OrderManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
@@ -21,6 +24,13 @@ import UserManagement from '@/components/admin/UserManagement';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login'); // Adjust route if needed
+  };
 
   const { data: stats } = useQuery({
     queryKey: ['admin-stats'],
@@ -29,7 +39,8 @@ const AdminPanel = () => {
         supabase.from('products').select('id').eq('is_active', true),
         supabase.from('orders').select('id, status, total_amount'),
         supabase.from('contact_forms').select('id, is_read').eq('is_read', false),
-        supabase.from('orders').select('total_amount, created_at').gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+        supabase.from('orders').select('total_amount, created_at')
+          .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
       ]);
 
       const totalRevenue = revenueResult.data?.reduce((sum, order) => sum + order.total_amount, 0) || 0;
@@ -40,7 +51,7 @@ const AdminPanel = () => {
         pendingOrders: ordersResult.data?.filter(order => order.status === 'pending').length || 0,
         unreadContacts: contactsResult.data?.length || 0,
         monthlyRevenue: totalRevenue,
-        conversionRate: 3.2 // Mock data - calculate from actual analytics
+        conversionRate: 3.2
       };
     }
   });
@@ -59,9 +70,9 @@ const AdminPanel = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <img 
-                src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png" 
-                alt="MY Balloons MY Prop's" 
+              <img
+                src="/lovable-uploads/34c11f5d-7c74-4a25-b9ad-718f3279b247.png"
+                alt="MY Balloons MY Prop's"
                 className="h-10 w-auto"
               />
               <div>
@@ -69,69 +80,69 @@ const AdminPanel = () => {
                 <p className="text-sm text-gray-500">Manage your business</p>
               </div>
             </div>
-            
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">
-                  Welcome, Admin
-                </p>
-                <p className="text-xs text-gray-500">
-                  admin@myballoons.com
-                </p>
+                <p className="text-sm font-medium text-gray-900">Welcome, Admin</p>
+                <p className="text-xs text-gray-500">admin@myballoons.com</p>
               </div>
-              <div className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center text-white font-bold">
-                A
-              </div>
+              <div className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center text-white font-bold">A</div>
+              <Button
+                onClick={handleLogout}
+                className="ml-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+              >
+                Logout
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Quick Stats */}
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-100 text-sm font-medium">Total Products</p>
-                  <p className="text-3xl font-bold">{stats?.totalProducts || 0}</p>
+                  <p className="text-3xl font-bold">{stats?.totalProducts}</p>
                 </div>
                 <Package className="h-10 w-10 text-blue-200" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-green-100 text-sm font-medium">Total Orders</p>
-                  <p className="text-3xl font-bold">{stats?.totalOrders || 0}</p>
+                  <p className="text-3xl font-bold">{stats?.totalOrders}</p>
                 </div>
                 <ShoppingCart className="h-10 w-10 text-green-200" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-purple-100 text-sm font-medium">Monthly Revenue</p>
-                  <p className="text-3xl font-bold">₹{stats?.monthlyRevenue?.toLocaleString() || 0}</p>
+                  <p className="text-3xl font-bold">₹{stats?.monthlyRevenue?.toLocaleString()}</p>
                 </div>
                 <DollarSign className="h-10 w-10 text-purple-200" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-orange-100 text-sm font-medium">Pending Orders</p>
-                  <p className="text-3xl font-bold">{stats?.pendingOrders || 0}</p>
+                  <p className="text-3xl font-bold">{stats?.pendingOrders}</p>
                 </div>
                 <TrendingUp className="h-10 w-10 text-orange-200" />
               </div>
@@ -160,71 +171,26 @@ const AdminPanel = () => {
           </CardContent>
         </Card>
 
-        {/* Main Content Tabs */}
+        {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8">
-            <TabsTrigger value="dashboard" className="flex items-center space-x-2">
-              <BarChart3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Dashboard</span>
-            </TabsTrigger>
-            <TabsTrigger value="products" className="flex items-center space-x-2">
-              <Package className="h-4 w-4" />
-              <span className="hidden sm:inline">Products</span>
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center space-x-2">
-              <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">Orders</span>
-            </TabsTrigger>
-            <TabsTrigger value="contacts" className="flex items-center space-x-2">
-              <MessageSquare className="h-4 w-4" />
-              <span className="hidden sm:inline">Messages</span>
-            </TabsTrigger>
-            <TabsTrigger value="content" className="flex items-center space-x-2">
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Content</span>
-            </TabsTrigger>
-            <TabsTrigger value="gallery" className="flex items-center space-x-2">
-              <Image className="h-4 w-4" />
-              <span className="hidden sm:inline">Gallery</span>
-            </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center space-x-2">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Users</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center space-x-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </TabsTrigger>
+            <TabsTrigger value="dashboard"><BarChart3 className="h-4 w-4" /><span className="hidden sm:inline">Dashboard</span></TabsTrigger>
+            <TabsTrigger value="products"><Package className="h-4 w-4" /><span className="hidden sm:inline">Products</span></TabsTrigger>
+            <TabsTrigger value="orders"><ShoppingCart className="h-4 w-4" /><span className="hidden sm:inline">Orders</span></TabsTrigger>
+            <TabsTrigger value="contacts"><MessageSquare className="h-4 w-4" /><span className="hidden sm:inline">Messages</span></TabsTrigger>
+            <TabsTrigger value="content"><FileText className="h-4 w-4" /><span className="hidden sm:inline">Content</span></TabsTrigger>
+            <TabsTrigger value="gallery"><Image className="h-4 w-4" /><span className="hidden sm:inline">Gallery</span></TabsTrigger>
+            <TabsTrigger value="users"><Users className="h-4 w-4" /><span className="hidden sm:inline">Users</span></TabsTrigger>
+            <TabsTrigger value="settings"><Settings className="h-4 w-4" /><span className="hidden sm:inline">Settings</span></TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="dashboard">
-            <AnalyticsDashboard />
-          </TabsContent>
-          
-          <TabsContent value="products">
-            <ProductManagement />
-          </TabsContent>
-          
-          <TabsContent value="orders">
-            <OrderManagement />
-          </TabsContent>
-          
-          <TabsContent value="contacts">
-            <ContactManagement />
-          </TabsContent>
-          
-          <TabsContent value="content">
-            <ContentManagement />
-          </TabsContent>
-          
-          <TabsContent value="gallery">
-            <GalleryManagement />
-          </TabsContent>
-          
-          <TabsContent value="users">
-            <UserManagement />
-          </TabsContent>
-          
+
+          <TabsContent value="dashboard"><AnalyticsDashboard /></TabsContent>
+          <TabsContent value="products"><ProductManagement /></TabsContent>
+          <TabsContent value="orders"><OrderManagement /></TabsContent>
+          <TabsContent value="contacts"><ContactManagement /></TabsContent>
+          <TabsContent value="content"><ContentManagement /></TabsContent>
+          <TabsContent value="gallery"><GalleryManagement /></TabsContent>
+          <TabsContent value="users"><UserManagement /></TabsContent>
           <TabsContent value="settings">
             <div className="space-y-6">
               <SettingsManagement />
