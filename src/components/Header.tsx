@@ -121,7 +121,13 @@ const Header = () => {
 
           <div className="flex items-center space-x-3">
             {/* Desktop CTA Button */}
-          
+            <Button 
+              onClick={() => navigateToPage('/admin')}
+              className="hidden lg:flex bg-brand-red hover:bg-red-600 text-white px-4 xl:px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-sm xl:text-base"
+              aria-label="Go to admin panel"
+            >
+              Admin Panel
+            </Button>
 
             {/* Mobile Menu Button */}
             <Button
@@ -183,7 +189,13 @@ const Header = () => {
                 Contact
               </button>
               <div className="pt-3 border-t">
-             
+                <Button 
+                  onClick={() => navigateToPage('/admin')}
+                  className="w-full bg-brand-red hover:bg-red-600 text-white py-3 rounded-full transition-all duration-300 shadow-lg"
+                >
+                  Admin Panel
+                </Button>
+              </div>
             </nav>
           </div>
         )}
