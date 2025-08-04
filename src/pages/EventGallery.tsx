@@ -357,7 +357,7 @@ const EventGallery = () => {
             </Button>
             <Button 
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-brand-red"
+              className="bg-transparent border-white text-white hover:bg-white hover:text-brand-red"
               onClick={() => navigate('/props-store')}
             >
               Shop Props
