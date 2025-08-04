@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
-
 import {
   BarChart3, Package, ShoppingCart, MessageSquare, FileText,
   Image, Settings, Users, TrendingUp, DollarSign, Eye, Plus
@@ -30,7 +29,7 @@ const AdminPanel = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/login'); // Adjust route if needed
   };
 
   const { data: stats } = useQuery({
@@ -67,7 +66,7 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b shadow-sm">
+      <div className="bg-white border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
@@ -96,10 +95,10 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
@@ -199,7 +198,7 @@ const AdminPanel = () => {
             </div>
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
     </div>
   );
 };
