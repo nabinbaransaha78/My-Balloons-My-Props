@@ -3,13 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  ShoppingCart, Plus, Minus, Filter, ArrowLeft, Search, X, Heart, 
-  Grid3X3, List, SlidersHorizontal, Star, Eye, Share2, Package,
-  Truck, Shield, RotateCcw, Zap
+  ShoppingCart, ArrowLeft, Search, X, Heart, 
+  Grid3X3, List, SlidersHorizontal, Package,
+  Truck, Shield, RotateCcw, Zap, Filter
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -20,6 +18,9 @@ import OffersCarousel from '@/components/store/OffersCarousel';
 import ProductRecommendations from '@/components/store/ProductRecommendations';
 import WishlistManager from '@/components/store/WishlistManager';
 import WhatsAppSupport from '@/components/store/WhatsAppSupport';
+import ProductCard from '@/components/store/ProductCard';
+import ProductQuickView from '@/components/store/ProductQuickView';
+import ProductFilters from '@/components/store/ProductFilters';
 import {
   Sheet,
   SheetContent,
@@ -35,7 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 
 interface Product {
   id: string;
@@ -66,8 +66,15 @@ const PropsStore = () => {
   const [showWishlist, setShowWishlist] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
-  const [priceRange, setPriceRange] = useState([0, 5000]);
   const [showFilters, setShowFilters] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [filters, setFilters] = useState({
+    categories: [] as string[],
+    priceRange: [0, 5000] as [number, number],
+    inStock: false,
+    onSale: false,
+    rating: 0
+  });
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -113,11 +120,15 @@ const PropsStore = () => {
   });
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'all' || product.categories?.name === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || 
+      product.categories?.name === selectedCategory ||
+      filters.categories.length === 0 ||
+      filters.categories.includes(product.categories?.name || '');
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
-    return matchesCategory && matchesSearch && matchesPrice;
+    const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
+    const matchesStock = !filters.inStock || product.stock_quantity > 0;
+    return matchesCategory && matchesSearch && matchesPrice && matchesStock;
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -173,10 +184,16 @@ const PropsStore = () => {
   const getTotalPrice = () => cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const clearSearch = () => setSearchQuery('');
-  const clearFilters = () => {
+  const clearAllFilters = () => {
     setSelectedCategory('all');
     setSearchQuery('');
-    setPriceRange([0, 5000]);
+    setFilters({
+      categories: [],
+      priceRange: [0, maxPrice],
+      inStock: false,
+      onSale: false,
+      rating: 0
+    });
     setSortBy('name');
   };
 
@@ -406,68 +423,13 @@ const PropsStore = () => {
             {/* Desktop Sidebar Filters */}
             <div className={`hidden lg:block transition-all duration-300 ${showFilters ? 'w-80' : 'w-0 overflow-hidden'}`}>
               {showFilters && (
-                <Card className="sticky top-32">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center justify-between text-lg">
-                      <div className="flex items-center space-x-2">
-                        <Filter className="h-5 w-5" />
-                        <span>Filters</span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowFilters(false)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div>
-                      <h4 className="font-medium mb-3">Categories</h4>
-                      <div className="space-y-2">
-                        <Button
-                          variant={selectedCategory === 'all' ? 'default' : 'ghost'}
-                          className="w-full justify-start"
-                          onClick={() => setSelectedCategory('all')}
-                        >
-                          All Categories
-                        </Button>
-                        {categories.map((category) => (
-                          <Button
-                            key={category.id}
-                            variant={selectedCategory === category.name ? 'default' : 'ghost'}
-                            className="w-full justify-start"
-                            onClick={() => setSelectedCategory(category.name)}
-                          >
-                            {category.name}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-3">Price Range</h4>
-                      <div className="space-y-3">
-                        <Slider
-                          value={priceRange}
-                          onValueChange={setPriceRange}
-                          max={maxPrice}
-                          step={50}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-sm text-gray-600">
-                          <span>₹{priceRange[0]}</span>
-                          <span>₹{priceRange[1]}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <Button onClick={clearFilters} variant="outline" className="w-full">
-                      Clear All Filters
-                    </Button>
-                  </CardContent>
-                </Card>
+                <ProductFilters
+                  categories={categories}
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  onClearFilters={clearAllFilters}
+                  maxPrice={maxPrice}
+                />
               )}
             </div>
 
@@ -488,7 +450,7 @@ const PropsStore = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={clearFilters}
+                      onClick={clearAllFilters}
                       className="text-brand-red hover:text-red-600"
                     >
                       Clear filters
@@ -537,122 +499,15 @@ const PropsStore = () => {
                       const cartQuantity = cartItem?.quantity || 0;
                       
                       return (
-                        <Card 
-                          key={product.id} 
-                          className={`group hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex ${
-                            viewMode === 'list' ? 'flex-row' : 'flex-col'
-                          }`}
-                        >
-                          <div className={`relative overflow-hidden ${
-                            viewMode === 'grid' 
-                              ? 'aspect-square' 
-                              : 'w-32 h-32 flex-shrink-0'
-                          }`}>
-                            <img
-                              src={product.image_url || 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'}
-                              alt={product.name}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            
-                            <WishlistManager product={product} onAddToCart={addToCart} />
-                            
-                            {product.categories && (
-                              <Badge className="absolute top-2 left-2 bg-brand-blue text-white text-xs">
-                                {product.categories.name}
-                              </Badge>
-                            )}
-                            
-                            {product.stock_quantity < 5 && product.stock_quantity > 0 && (
-                              <Badge className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs">
-                                Only {product.stock_quantity} left
-                              </Badge>
-                            )}
-                            
-                            {product.stock_quantity === 0 && (
-                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                <Badge className="bg-red-500 text-white">Out of Stock</Badge>
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className={`flex flex-col flex-1 ${viewMode === 'list' ? 'p-4' : ''}`}>
-                            <CardContent className={`flex-1 flex flex-col ${viewMode === 'grid' ? 'p-4' : 'p-0'}`}>
-                              <h3 className={`font-semibold mb-2 line-clamp-2 leading-tight flex-1 ${
-                                viewMode === 'grid' ? 'text-sm lg:text-base' : 'text-base lg:text-lg'
-                              }`}>
-                                {product.name}
-                              </h3>
-                              
-                              {viewMode === 'list' && (
-                                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                                  {product.description}
-                                </p>
-                              )}
-                              
-                              <div className="flex justify-between items-center mt-auto">
-                                <div>
-                                  <span className={`font-bold text-brand-red ${
-                                    viewMode === 'grid' ? 'text-lg lg:text-xl' : 'text-xl lg:text-2xl'
-                                  }`}>
-                                    ₹{product.price}
-                                  </span>
-                                  {viewMode === 'list' && (
-                                    <p className="text-xs text-gray-500">
-                                      Stock: {product.stock_quantity}
-                                    </p>
-                                  )}
-                                </div>
-                                
-                                {viewMode === 'grid' && (
-                                  <span className="text-xs text-gray-500 hidden lg:inline">
-                                    Stock: {product.stock_quantity}
-                                  </span>
-                                )}
-                              </div>
-                            </CardContent>
-                            
-                            <CardFooter className={`${viewMode === 'grid' ? 'p-4 pt-0' : 'p-0 pt-4'}`}>
-                              {cartQuantity > 0 ? (
-                                <div className="flex items-center justify-between w-full">
-                                  <div className="flex items-center space-x-2">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateCartQuantity(product.id, cartQuantity - 1)}
-                                      className="h-8 w-8 p-0"
-                                    >
-                                      <Minus className="h-3 w-3" />
-                                    </Button>
-                                    <span className="font-semibold min-w-[2rem] text-center">
-                                      {cartQuantity}
-                                    </span>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => updateCartQuantity(product.id, cartQuantity + 1)}
-                                      disabled={cartQuantity >= product.stock_quantity}
-                                      className="h-8 w-8 p-0"
-                                    >
-                                      <Plus className="h-3 w-3" />
-                                    </Button>
-                                  </div>
-                                  <span className="text-sm font-medium text-brand-red">
-                                    ₹{(product.price * cartQuantity).toFixed(0)}
-                                  </span>
-                                </div>
-                              ) : (
-                                <Button
-                                  className="w-full bg-brand-red hover:bg-red-600"
-                                  onClick={() => addToCart(product)}
-                                  disabled={product.stock_quantity === 0}
-                                >
-                                  <ShoppingCart className="h-4 w-4 mr-2" />
-                                  {product.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
-                                </Button>
-                              )}
-                            </CardFooter>
-                          </div>
-                        </Card>
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          viewMode={viewMode}
+                          cartQuantity={cartQuantity}
+                          onAddToCart={addToCart}
+                          onUpdateQuantity={updateCartQuantity}
+                          onQuickView={setQuickViewProduct}
+                        />
                       );
                     })}
                   </div>
@@ -670,7 +525,7 @@ const PropsStore = () => {
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <Button 
                           variant="outline" 
-                          onClick={clearFilters}
+                          onClick={clearAllFilters}
                         >
                           Clear All Filters
                         </Button>
@@ -783,6 +638,15 @@ const PropsStore = () => {
         cart={cart}
         updateQuantity={updateCartQuantity}
         totalPrice={getTotalPrice()}
+      />
+
+      <ProductQuickView
+        product={quickViewProduct}
+        isOpen={!!quickViewProduct}
+        onClose={() => setQuickViewProduct(null)}
+        onAddToCart={addToCart}
+        cartQuantity={cart.find(item => item.id === quickViewProduct?.id)?.quantity || 0}
+        onUpdateQuantity={updateCartQuantity}
       />
 
       <WhatsAppSupport />
