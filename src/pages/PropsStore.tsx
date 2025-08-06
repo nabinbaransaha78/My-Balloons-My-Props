@@ -120,31 +120,43 @@ const PropsStore = () => {
   });
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'all' || 
-      product.categories?.name === selectedCategory ||
-      filters.categories.length === 0 ||
-      filters.categories.includes(product.categories?.name || '');
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
-    const matchesStock = !filters.inStock || product.stock_quantity > 0;
-    return matchesCategory && matchesSearch && matchesPrice && matchesStock;
-  });
+  // Ensure product and its properties are valid before processing
+  if (!product || typeof product.name !== 'string' || typeof product.price !== 'number') {
+    return false;
+  }
+
+  const matchesCategory = selectedCategory === 'all' ||
+    product.categories?.name === selectedCategory ||
+    filters.categories.length === 0 ||
+    filters.categories.includes(product.categories?.name || '');
+
+  const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
+
+  const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
+  const matchesStock = !filters.inStock || product.stock_quantity > 0;
+
+  return matchesCategory && matchesSearch && matchesPrice && matchesStock;
+});
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-low':
-        return a.price - b.price;
-      case 'price-high':
-        return b.price - a.price;
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'newest':
-        return new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime();
-      default:
-        return 0;
-    }
-  });
+  switch (sortBy) {
+    case 'price-low':
+      return (a.price || 0) - (b.price || 0);
+    case 'price-high':
+      return (b.price || 0) - (a.price || 0);
+    case 'name':
+      return (a.name || '').localeCompare(b.name || '');
+    case 'newest':
+      // Added a check for `created_at` which was missing from the Product interface
+      // This prevents potential errors if the property doesn't exist
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return dateB - dateA;
+    default:
+      return 0;
+  }
+});
 
   const addToCart = (product: Product) => {
     setCart(prevCart => {
