@@ -266,29 +266,24 @@ const ProductQuickView = ({
                   Bundle Deals
                 </Button>
               </div>
-
-              <div className="max-h-40 overflow-y-auto">
-                {activeTab === 'details' && (
-                  <div className="space-y-2 text-sm">
-                    <p><strong>Material:</strong> Premium quality materials</p>
-                    <p><strong>Dimensions:</strong> Standard party size</p>
-                    <p><strong>Care Instructions:</strong> Handle with care, store in dry place</p>
-                    <p><strong>Suitable for:</strong> Indoor and outdoor events</p>
-                  </div>
-                )}
-                
-                {activeTab === 'reviews' && (
-                  <div className="text-sm text-gray-600">
-                    <p>Customer reviews and ratings will be displayed here.</p>
-                  </div>
-                )}
-                
-                {activeTab === 'bundles' && (
-                  <div className="text-sm text-gray-600">
-                    <p>Frequently bought together items will be shown here.</p>
-                  </div>
-                )}
-              </div>
+<div className="max-h-40 overflow-y-auto">
+  {activeTab === 'details' && (
+    <div className="space-y-2 text-sm">
+      <p><strong>Material:</strong> Premium quality materials</p>
+      <p><strong>Dimensions:</strong> Standard party size</p>
+      <p><strong>Care Instructions:</strong> Handle with care, store in dry place</p>
+      <p><strong>Suitable for:</strong> Indoor and outdoor events</p>
+    </div>
+  )}
+  
+  {activeTab === 'reviews' && (
+    <ProductReviews product={product} />
+  )}
+  
+  {activeTab === 'bundles' && (
+    <FrequentlyBoughtTogether store={product} />
+  )}
+</div>
             </div>
           </div>
         </div>
