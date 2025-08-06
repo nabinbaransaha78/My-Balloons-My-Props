@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,7 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Plus, Minus, Filter, ArrowLeft, Search, X, Heart } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  ShoppingCart, Plus, Minus, Filter, ArrowLeft, Search, X, Heart, 
+  Grid3X3, List, SlidersHorizontal, Star, Eye, Share2, Package,
+  Truck, Shield, RotateCcw, Zap
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
@@ -24,6 +28,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 
 interface Product {
   id: string;
@@ -52,6 +64,10 @@ const PropsStore = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState('name');
+  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -100,7 +116,23 @@ const PropsStore = () => {
     const matchesCategory = selectedCategory === 'all' || product.categories?.name === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+    return matchesCategory && matchesSearch && matchesPrice;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'newest':
+        return new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime();
+      default:
+        return 0;
+    }
   });
 
   const addToCart = (product: Product) => {
@@ -141,47 +173,53 @@ const PropsStore = () => {
   const getTotalPrice = () => cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const clearSearch = () => setSearchQuery('');
+  const clearFilters = () => {
+    setSelectedCategory('all');
+    setSearchQuery('');
+    setPriceRange([0, 5000]);
+    setSortBy('name');
+  };
+
+  const maxPrice = Math.max(...products.map(p => p.price), 5000);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      {/* Fixed Store Header with proper alignment */}
-      <div className="bg-white shadow-sm border-b pt-16 lg:pt-20 sticky top-16 lg:top-20 z-30">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-3">
+      {/* Hero Section */}
+      <section className="pt-20 bg-gradient-soft">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
-                size="sm"
                 onClick={() => navigate('/')}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 hover:bg-white/50"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">Back to Home</span>
+                <span>Back to Home</span>
               </Button>
               <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Props Store</h1>
-                <p className="text-sm text-gray-600 hidden sm:block">Find the perfect props for your celebration</p>
+                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">Props Store</h1>
+                <p className="text-gray-600">Find the perfect props for your celebration</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => setShowWishlist(!showWishlist)}
-                className="relative"
+                className="relative hidden sm:flex"
               >
                 <Heart className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Wishlist</span>
+                Wishlist
               </Button>
               
               <Button
                 onClick={() => setIsCartOpen(true)}
-                className="relative bg-brand-red hover:bg-red-600 px-4 py-2"
+                className="relative bg-brand-red hover:bg-red-600"
               >
-                <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5 mr-2" />
+                <ShoppingCart className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Cart</span>
                 {getTotalItems() > 0 && (
                   <Badge className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center">
@@ -192,87 +230,172 @@ const PropsStore = () => {
             </div>
           </div>
 
-          {/* Search and Filter Bar */}
-          <div className="flex gap-3">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          {/* Search and Controls */}
+          <div className="flex flex-col lg:flex-row gap-4 items-center">
+            <div className="relative flex-1 max-w-2xl">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
-                placeholder="Search products..."
+                placeholder="Search for balloons, decorations, props..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-8"
+                className="pl-10 pr-10 h-12 text-base"
               />
               {searchQuery && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={clearSearch}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
                 >
-                  <X className="h-3 w-3" />
+                  <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
             
-            {/* Mobile Filter Sheet */}
-            <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="lg:hidden">
-                  <Filter className="h-4 w-4" />
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="hidden lg:flex items-center gap-2"
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+                Filters
+              </Button>
+              
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="name">Name A-Z</SelectItem>
+                  <SelectItem value="price-low">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="flex border rounded-lg">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="rounded-r-none"
+                >
+                  <Grid3X3 className="h-4 w-4" />
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-72">
-                <SheetHeader>
-                  <SheetTitle>Filter Products</SheetTitle>
-                  <SheetDescription>
-                    Choose a category to filter products
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="mt-6 space-y-3">
-                  <Button
-                    variant={selectedCategory === 'all' ? 'default' : 'ghost'}
-                    className="w-full justify-start"
-                    onClick={() => {
-                      setSelectedCategory('all');
-                      setIsFilterOpen(false);
-                    }}
-                  >
-                    All Categories
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="rounded-l-none"
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              {/* Mobile Filter Sheet */}
+              <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="lg:hidden">
+                    <Filter className="h-4 w-4" />
                   </Button>
-                  {categories.map((category) => (
-                    <Button
-                      key={category.id}
-                      variant={selectedCategory === category.name ? 'default' : 'ghost'}
-                      className="w-full justify-start"
-                      onClick={() => {
-                        setSelectedCategory(category.name);
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      {category.name}
+                </SheetTrigger>
+                <SheetContent side="left" className="w-80">
+                  <SheetHeader>
+                    <SheetTitle>Filter Products</SheetTitle>
+                    <SheetDescription>
+                      Refine your search to find the perfect props
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-3">Categories</h4>
+                      <div className="space-y-2">
+                        <Button
+                          variant={selectedCategory === 'all' ? 'default' : 'ghost'}
+                          className="w-full justify-start"
+                          onClick={() => setSelectedCategory('all')}
+                        >
+                          All Categories
+                        </Button>
+                        {categories.map((category) => (
+                          <Button
+                            key={category.id}
+                            variant={selectedCategory === category.name ? 'default' : 'ghost'}
+                            className="w-full justify-start"
+                            onClick={() => setSelectedCategory(category.name)}
+                          >
+                            {category.name}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-3">Price Range</h4>
+                      <div className="space-y-3">
+                        <Slider
+                          value={priceRange}
+                          onValueChange={setPriceRange}
+                          max={maxPrice}
+                          step={50}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>₹{priceRange[0]}</span>
+                          <span>₹{priceRange[1]}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Button onClick={clearFilters} variant="outline" className="w-full">
+                      Clear All Filters
                     </Button>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Offers Carousel */}
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <OffersCarousel />
+      </div>
+
+      {/* Trust Indicators */}
+      <div className="bg-white border-y">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Truck className="h-4 w-4 text-green-500" />
+              <span>Free Delivery Above ₹999</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Shield className="h-4 w-4 text-blue-500" />
+              <span>Quality Guaranteed</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <RotateCcw className="h-4 w-4 text-purple-500" />
+              <span>Easy Returns</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Zap className="h-4 w-4 text-yellow-500" />
+              <span>Same Day Setup</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Offers Carousel */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
-        <OffersCarousel />
-      </div>
-
-      {/* Main Content with proper container alignment */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {showWishlist ? (
-          <div className="mb-6">
+          <div className="mb-8">
             <WishlistManager 
               showWishlistView={true} 
               onAddToCart={(product) => {
                 addToCart(product);
-                // Force re-render of wishlist component
                 setShowWishlist(false);
                 setTimeout(() => setShowWishlist(true), 100);
               }} 
@@ -280,193 +403,379 @@ const PropsStore = () => {
           </div>
         ) : (
           <div className="flex gap-8">
-            {/* Desktop Sidebar Filters - Fixed width and positioning */}
-          <div className="hidden lg:block w-64 flex-shrink-0">
-            <Card className="sticky top-40">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Filter className="h-5 w-5" />
-                  <span>Categories</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Button
-                  variant={selectedCategory === 'all' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setSelectedCategory('all')}
-                >
-                  All Categories
-                </Button>
-                {categories.map((category) => (
-                  <Button
-                    key={category.id}
-                    variant={selectedCategory === category.name ? 'default' : 'ghost'}
-                    className="w-full justify-start"
-                    onClick={() => setSelectedCategory(category.name)}
-                  >
-                    {category.name}
-                  </Button>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
-            {/* Products Grid - Proper alignment and spacing */}
-            <div className="flex-1 min-w-0">
-            {productsLoading ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-                {[...Array(8)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="aspect-square bg-gray-200 rounded-t-lg"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <>
-                {/* Results header with proper alignment */}
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center space-x-4">
-                    <p className="text-sm text-gray-600">
-                      {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
-                    </p>
-                    {selectedCategory !== 'all' && (
-                      <Badge variant="outline" className="text-xs">
-                        {selectedCategory}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Products Grid with consistent spacing */}
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-                  {filteredProducts.map((product) => {
-                    const cartItem = cart.find(item => item.id === product.id);
-                    const cartQuantity = cartItem?.quantity || 0;
-                    
-                    return (
-                      <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden h-full flex flex-col">
-                        <div className="relative aspect-square overflow-hidden">
-                          <img
-                            src={product.image_url || 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'}
-                            alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          
-                          <WishlistManager product={product} onAddToCart={addToCart} />
-                          
-                          {product.categories && (
-                            <Badge className="absolute top-2 left-2 bg-brand-blue text-white text-xs">
-                              {product.categories.name}
-                            </Badge>
-                          )}
-                          {product.stock_quantity < 5 && product.stock_quantity > 0 && (
-                            <Badge className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs">
-                              Only {product.stock_quantity} left
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <CardContent className="p-3 lg:p-4 flex-1 flex flex-col">
-                          <h3 className="font-semibold text-sm lg:text-base mb-2 line-clamp-2 leading-tight flex-1">
-                            {product.name}
-                          </h3>
-                          <p className="text-gray-600 text-xs lg:text-sm mb-3 line-clamp-2 hidden lg:block">
-                            {product.description}
-                          </p>
-                          <div className="flex justify-between items-center mt-auto">
-                            <span className="text-lg lg:text-xl font-bold text-brand-red">
-                              ₹{product.price}
-                            </span>
-                            <span className="text-xs text-gray-500 hidden lg:inline">
-                              Stock: {product.stock_quantity}
-                            </span>
-                          </div>
-                        </CardContent>
-                        
-                        <CardFooter className="p-3 lg:p-4 pt-0">
-                          {cartQuantity > 0 ? (
-                            <div className="flex items-center justify-between w-full">
-                              <div className="flex items-center space-x-2">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => updateCartQuantity(product.id, cartQuantity - 1)}
-                                  className="h-8 w-8 p-0"
-                                >
-                                  <Minus className="h-3 w-3" />
-                                </Button>
-                                <span className="font-semibold min-w-[2rem] text-center text-sm">
-                                  {cartQuantity}
-                                </span>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => updateCartQuantity(product.id, cartQuantity + 1)}
-                                  disabled={cartQuantity >= product.stock_quantity}
-                                  className="h-8 w-8 p-0"
-                                >
-                                  <Plus className="h-3 w-3" />
-                                </Button>
-                              </div>
-                              <span className="text-xs lg:text-sm font-medium text-brand-red">
-                                ₹{(product.price * cartQuantity).toFixed(0)}
-                              </span>
-                            </div>
-                          ) : (
-                            <Button
-                              className="w-full bg-brand-red hover:bg-red-600 text-sm py-2"
-                              onClick={() => addToCart(product)}
-                              disabled={product.stock_quantity === 0}
-                            >
-                              {product.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
-                            </Button>
-                          )}
-                        </CardFooter>
-                      </Card>
-                    );
-                  })}
-                </div>
-                
-                {/* Empty state with proper centering */}
-                {filteredProducts.length === 0 && (
-                  <div className="text-center py-16">
-                    <div className="text-gray-400 mb-4">
-                      <ShoppingCart className="h-16 w-16 mx-auto mb-4" />
-                    </div>
-                    <p className="text-gray-500 text-lg mb-2">No products found</p>
-                    <p className="text-gray-400 text-sm mb-6">Try adjusting your search or filters</p>
-                    {(searchQuery || selectedCategory !== 'all') && (
-                      <Button 
-                        variant="outline" 
-                        onClick={() => {
-                          setSearchQuery('');
-                          setSelectedCategory('all');
-                        }}
-                        className="mt-4"
+            {/* Desktop Sidebar Filters */}
+            <div className={`hidden lg:block transition-all duration-300 ${showFilters ? 'w-80' : 'w-0 overflow-hidden'}`}>
+              {showFilters && (
+                <Card className="sticky top-32">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center justify-between text-lg">
+                      <div className="flex items-center space-x-2">
+                        <Filter className="h-5 w-5" />
+                        <span>Filters</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowFilters(false)}
                       >
-                        Clear Filters
+                        <X className="h-4 w-4" />
                       </Button>
-                    )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <h4 className="font-medium mb-3">Categories</h4>
+                      <div className="space-y-2">
+                        <Button
+                          variant={selectedCategory === 'all' ? 'default' : 'ghost'}
+                          className="w-full justify-start"
+                          onClick={() => setSelectedCategory('all')}
+                        >
+                          All Categories
+                        </Button>
+                        {categories.map((category) => (
+                          <Button
+                            key={category.id}
+                            variant={selectedCategory === category.name ? 'default' : 'ghost'}
+                            className="w-full justify-start"
+                            onClick={() => setSelectedCategory(category.name)}
+                          >
+                            {category.name}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-3">Price Range</h4>
+                      <div className="space-y-3">
+                        <Slider
+                          value={priceRange}
+                          onValueChange={setPriceRange}
+                          max={maxPrice}
+                          step={50}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>₹{priceRange[0]}</span>
+                          <span>₹{priceRange[1]}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Button onClick={clearFilters} variant="outline" className="w-full">
+                      Clear All Filters
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Products Section */}
+            <div className="flex-1 min-w-0">
+              {/* Results Header */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div className="flex items-center space-x-4">
+                  <p className="text-gray-600">
+                    {sortedProducts.length} product{sortedProducts.length !== 1 ? 's' : ''} found
+                  </p>
+                  {selectedCategory !== 'all' && (
+                    <Badge variant="outline" className="text-sm">
+                      {selectedCategory}
+                    </Badge>
+                  )}
+                  {(searchQuery || selectedCategory !== 'all' || priceRange[0] > 0 || priceRange[1] < maxPrice) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="text-brand-red hover:text-red-600"
+                    >
+                      Clear filters
+                    </Button>
+                  )}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="hidden lg:flex items-center gap-2"
+                >
+                  <SlidersHorizontal className="h-4 w-4" />
+                  {showFilters ? 'Hide Filters' : 'Show Filters'}
+                </Button>
+              </div>
+
+              {productsLoading ? (
+                <div className={`grid gap-6 ${
+                  viewMode === 'grid' 
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+                    : 'grid-cols-1'
+                }`}>
+                  {[...Array(8)].map((_, i) => (
+                    <Card key={i} className="animate-pulse">
+                      <div className={`bg-gray-200 rounded-t-lg ${
+                        viewMode === 'grid' ? 'aspect-square' : 'h-32'
+                      }`}></div>
+                      <CardContent className="p-4">
+                        <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                        <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  {/* Products Grid/List */}
+                  <div className={`grid gap-6 ${
+                    viewMode === 'grid' 
+                      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+                      : 'grid-cols-1'
+                  }`}>
+                    {sortedProducts.map((product) => {
+                      const cartItem = cart.find(item => item.id === product.id);
+                      const cartQuantity = cartItem?.quantity || 0;
+                      
+                      return (
+                        <Card 
+                          key={product.id} 
+                          className={`group hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex ${
+                            viewMode === 'list' ? 'flex-row' : 'flex-col'
+                          }`}
+                        >
+                          <div className={`relative overflow-hidden ${
+                            viewMode === 'grid' 
+                              ? 'aspect-square' 
+                              : 'w-32 h-32 flex-shrink-0'
+                          }`}>
+                            <img
+                              src={product.image_url || 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'}
+                              alt={product.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            
+                            <WishlistManager product={product} onAddToCart={addToCart} />
+                            
+                            {product.categories && (
+                              <Badge className="absolute top-2 left-2 bg-brand-blue text-white text-xs">
+                                {product.categories.name}
+                              </Badge>
+                            )}
+                            
+                            {product.stock_quantity < 5 && product.stock_quantity > 0 && (
+                              <Badge className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs">
+                                Only {product.stock_quantity} left
+                              </Badge>
+                            )}
+                            
+                            {product.stock_quantity === 0 && (
+                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <Badge className="bg-red-500 text-white">Out of Stock</Badge>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className={`flex flex-col flex-1 ${viewMode === 'list' ? 'p-4' : ''}`}>
+                            <CardContent className={`flex-1 flex flex-col ${viewMode === 'grid' ? 'p-4' : 'p-0'}`}>
+                              <h3 className={`font-semibold mb-2 line-clamp-2 leading-tight flex-1 ${
+                                viewMode === 'grid' ? 'text-sm lg:text-base' : 'text-base lg:text-lg'
+                              }`}>
+                                {product.name}
+                              </h3>
+                              
+                              {viewMode === 'list' && (
+                                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                                  {product.description}
+                                </p>
+                              )}
+                              
+                              <div className="flex justify-between items-center mt-auto">
+                                <div>
+                                  <span className={`font-bold text-brand-red ${
+                                    viewMode === 'grid' ? 'text-lg lg:text-xl' : 'text-xl lg:text-2xl'
+                                  }`}>
+                                    ₹{product.price}
+                                  </span>
+                                  {viewMode === 'list' && (
+                                    <p className="text-xs text-gray-500">
+                                      Stock: {product.stock_quantity}
+                                    </p>
+                                  )}
+                                </div>
+                                
+                                {viewMode === 'grid' && (
+                                  <span className="text-xs text-gray-500 hidden lg:inline">
+                                    Stock: {product.stock_quantity}
+                                  </span>
+                                )}
+                              </div>
+                            </CardContent>
+                            
+                            <CardFooter className={`${viewMode === 'grid' ? 'p-4 pt-0' : 'p-0 pt-4'}`}>
+                              {cartQuantity > 0 ? (
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center space-x-2">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => updateCartQuantity(product.id, cartQuantity - 1)}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <Minus className="h-3 w-3" />
+                                    </Button>
+                                    <span className="font-semibold min-w-[2rem] text-center">
+                                      {cartQuantity}
+                                    </span>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => updateCartQuantity(product.id, cartQuantity + 1)}
+                                      disabled={cartQuantity >= product.stock_quantity}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <Plus className="h-3 w-3" />
+                                    </Button>
+                                  </div>
+                                  <span className="text-sm font-medium text-brand-red">
+                                    ₹{(product.price * cartQuantity).toFixed(0)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <Button
+                                  className="w-full bg-brand-red hover:bg-red-600"
+                                  onClick={() => addToCart(product)}
+                                  disabled={product.stock_quantity === 0}
+                                >
+                                  <ShoppingCart className="h-4 w-4 mr-2" />
+                                  {product.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
+                                </Button>
+                              )}
+                            </CardFooter>
+                          </div>
+                        </Card>
+                      );
+                    })}
                   </div>
-                )}
-                {/* Recommendations Section */}
-                {filteredProducts.length > 0 && selectedCategory !== 'all' && (
+                  
+                  {/* Empty State */}
+                  {sortedProducts.length === 0 && !productsLoading && (
+                    <div className="text-center py-16">
+                      <div className="text-gray-400 mb-6">
+                        <Package className="h-20 w-20 mx-auto mb-4" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
+                      <p className="text-gray-500 mb-6">
+                        Try adjusting your search terms or filters to find what you're looking for.
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <Button 
+                          variant="outline" 
+                          onClick={clearFilters}
+                        >
+                          Clear All Filters
+                        </Button>
+                        <Button 
+                          onClick={() => navigate('/#contact')}
+                          className="bg-brand-red hover:bg-red-600"
+                        >
+                          Request Custom Props
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Load More Button (for pagination) */}
+                  {sortedProducts.length > 0 && sortedProducts.length >= 20 && (
+                    <div className="text-center mt-12">
+                      <Button variant="outline" className="px-8">
+                        Load More Products
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Recommendations Section */}
+              {sortedProducts.length > 0 && selectedCategory !== 'all' && (
+                <div className="mt-12">
                   <ProductRecommendations
                     categoryName={selectedCategory}
                     onAddToCart={addToCart}
-                    title="More from this Category"
+                    title={`More from ${selectedCategory}`}
                   />
-                )}
-              </>
-            )}
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+
+      {/* Featured Categories */}
+      <section className="bg-white py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8">Shop by Category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {categories.slice(0, 4).map((category) => (
+              <Card 
+                key={category.id}
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+                onClick={() => {
+                  setSelectedCategory(category.name);
+                  setShowWishlist(false);
+                }}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="text-3xl mb-3">
+                    {category.name === 'Balloons' && '🎈'}
+                    {category.name === 'Birthday Kits' && '🎂'}
+                    {category.name === 'Wedding Decor' && '💍'}
+                    {category.name === 'Baby Shower' && '🍼'}
+                  </div>
+                  <h3 className="font-semibold text-gray-900">{category.name}</h3>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="bg-gray-100 py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8">Why Choose Our Props?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-brand-red rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Premium Quality</h3>
+              <p className="text-gray-600">
+                All our props are made from high-quality materials that are safe, durable, and photo-ready.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Fast Delivery</h3>
+              <p className="text-gray-600">
+                Same-day delivery available in Bangalore. We ensure your props reach you on time.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Setup Support</h3>
+              <p className="text-gray-600">
+                Need help setting up? Our team provides guidance and setup assistance for your event.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <CartModal
         isOpen={isCartOpen}
@@ -477,7 +786,6 @@ const PropsStore = () => {
       />
 
       <WhatsAppSupport />
-
       <Footer />
     </div>
   );
