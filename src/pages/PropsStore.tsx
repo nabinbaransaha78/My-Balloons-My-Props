@@ -365,20 +365,20 @@ const PropsStore = () => {
                       <h4 className="font-medium mb-3">Price Range</h4>
                       <div className="space-y-3">
                         <Slider
-                          value={priceRange}
-                          onValueChange={setPriceRange}
+                          value={filters.priceRange}
+                          onValueChange={(value) => setFilters(prev => ({ ...prev, priceRange: value as [number, number] }))}
                           max={maxPrice}
                           step={50}
                           className="w-full"
                         />
                         <div className="flex justify-between text-sm text-gray-600">
-                          <span>₹{priceRange[0]}</span>
-                          <span>₹{priceRange[1]}</span>
+                          <span>₹{filters.priceRange[0]}</span>
+                          <span>₹{filters.priceRange[1]}</span>
                         </div>
                       </div>
                     </div>
                     
-                    <Button onClick={clearFilters} variant="outline" className="w-full">
+                    <Button onClick={clearAllFilters} variant="outline" className="w-full">
                       Clear All Filters
                     </Button>
                   </div>
