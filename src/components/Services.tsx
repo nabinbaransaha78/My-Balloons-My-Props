@@ -23,7 +23,7 @@ const Services = () => {
     buttonColor: 'bg-brand-yellow hover:bg-yellow-600'
   }, {
     icon: '🧸',
-    title: 'Baby Showers & Gender Reveals',
+    title: 'Baby Showers & Photo Shoot',
     description: 'Cute and creative themes to welcome the little one. Adorable decorations for precious moments.',
     color: 'from-pink-50 to-rose-50',
     buttonColor: 'bg-pink-500 hover:bg-pink-600'
