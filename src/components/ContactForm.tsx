@@ -32,37 +32,42 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email) {
       toast.error('Please fill in required fields');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      const { error } = await supabase
+      const messageContent = `${formData.message}${eventDate ? `\n\nEvent Date: ${format(eventDate, 'PPP')}` : ''}`;
+
+      const { data, error } = await supabase
         .from('contact_forms')
         .insert({
           name: formData.name,
           email: formData.email,
-          phone: formData.phone,
-          event_type: formData.eventType,
-          location: formData.location,
-          message: `${formData.message}${eventDate ? `\n\nEvent Date: ${format(eventDate, 'PPP')}` : ''}`
-        });
+          phone: formData.phone || null,
+          event_type: formData.eventType || null,
+          location: formData.location || null,
+          message: messageContent
+        })
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
-      // Log for email simulation
-      console.log('Contact form submitted - Email would be sent to myballoonsjayanagar@gmail.com:', {
-        ...formData,
-        eventDate: eventDate ? format(eventDate, 'PPP') : null
-      });
-      
+      if (!data || data.length === 0) {
+        throw new Error('No data returned from insert');
+      }
+
+      console.log('Contact form submitted successfully:', data);
+
       toast.success('Thank you! We\'ll get back to you within 24 hours.');
-      
-      // Reset form
+
       setFormData({
         name: '',
         email: '',
@@ -72,10 +77,11 @@ const ContactForm = () => {
         message: ''
       });
       setEventDate(undefined);
-      
+
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Failed to send message. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
