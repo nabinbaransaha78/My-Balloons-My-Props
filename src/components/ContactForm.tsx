@@ -137,8 +137,8 @@ const ContactForm = () => {
                     <div>
                       <p className="font-semibold text-gray-800">Visit Us</p>
                       <p className="text-gray-600 leading-relaxed">
-                        Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal,
-                        Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
+                        Site No.363 K.No.144/129/363 Ground floor, 16 cross, Mico Layout,
+                        Begur Bengaluru 560068
                       </p>
                     </div>
                   </div>

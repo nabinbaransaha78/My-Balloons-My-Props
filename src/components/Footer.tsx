@@ -150,8 +150,8 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <span className="text-brand-blue">📍</span>
                 <span className="text-gray-400 text-sm leading-relaxed">
-                  Srirama nilaya, 68, HAL Old Airport Rd, near doddanekundi signal, 
-                  Jawahar Nagar, Marathahalli, Bengaluru, Karnataka 560037
+                  Site No.363 K.No.144/129/363 Ground floor, 16 cross, Mico Layout,
+                  Begur Bengaluru 560068
                 </span>
               </div>
               <div className="flex items-center space-x-3">

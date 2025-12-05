@@ -15,7 +15,7 @@ const SettingsManagement = () => {
     email: 'myballoonsjayanagar@gmail.com',
     phone: '+91 9876543210',
     whatsapp: '+91 9876543210',
-    address: 'Jayanagar, Bangalore, Karnataka',
+    address: 'Site No.363 K.No.144/129/363 Ground floor, 16 cross, Mico Layout, Begur Bengaluru 560068',
     logo_url: '',
     tagline: 'Celebrate Every Moment with Us',
     working_hours: 'Mon-Sun: 9:00 AM - 8:00 PM'
